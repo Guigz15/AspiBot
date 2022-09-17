@@ -6,7 +6,7 @@ import lombok.Setter;
 import java.util.Random;
 
 public class AspiBot {
-    @Getter
+    @Getter @Setter
     private int xPosition;
     @Getter @Setter
     private int yPosition;
@@ -24,10 +24,8 @@ public class AspiBot {
 
     public AspiBot(Board board) {
         Random r = new Random();
-        int low = 0;
-        int high = 5;
-        this.xPosition = r.nextInt(high-low) + low;
-        this.yPosition = r.nextInt(high-low) + low;
+        this.xPosition = r.nextInt(board.getWidth());
+        this.yPosition = r.nextInt(board.getHeight());
         this.board = board;
     }
 

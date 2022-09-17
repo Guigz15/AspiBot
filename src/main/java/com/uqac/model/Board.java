@@ -7,11 +7,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Board {
-    @Getter
-    @Setter
+    @Getter @Setter
     private List<List<Tile>> tiles;
+    @Getter @Setter
+    private int height;
+    @Getter @Setter
+    private int width;
 
     public Board(int height, int width) {
+        this.height = height;
+        this.width = width;
         this.tiles = new ArrayList<>();
         for (int i = 0; i < height; i++) {
             List<Tile> row = new ArrayList<>();
