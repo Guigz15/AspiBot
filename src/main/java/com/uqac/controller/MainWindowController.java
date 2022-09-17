@@ -1,6 +1,6 @@
 package com.uqac.controller;
 
-import com.uqac.model.AspiBot;
+import com.uqac.model.Board;
 import com.uqac.model.Tile;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -9,31 +9,32 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 
 public class MainWindowController implements Initializable {
-    @FXML
+    @FXML @Getter
     private GridPane gridPane;
     @Getter @Setter
-    private List<List<Tile>> tiles;
+    private Board board;
 
+    public MainWindowController() {
+       this.board = new Board(5, 5);
+    }
     public void initialize() {
         for(int i = 0; i < 5; i++) {
-            List<Tile> row = new ArrayList<>();
             for(int j = 0; j < 5; j++) {
-                Tile tile = new Tile();
-                row.add(tile);
+                Tile tile = board.getTile(i, j);
+                tile.setHeight(100);
+                tile.setWidth(100);
+                gridPane.add(board.getTile(i, j), i, j);
             }
-            tiles.add(row);
         }
+        //System.out.println(((VBox)gridPane.getChildren().get(3)).getChildren().set(0, (new Rectangle()).setFill(); ImageView("images/dust_gem.png")));
     }
-
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        initialize();
     }
 }
