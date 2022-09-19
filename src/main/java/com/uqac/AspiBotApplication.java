@@ -2,7 +2,8 @@ package com.uqac;
 
 import com.uqac.controller.MainWindowController;
 import com.uqac.model.AspiBot;
-import com.uqac.model.Tile;
+import com.uqac.model.Board;
+import com.uqac.model.MyThread;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,11 +11,14 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.paint.ImagePattern;
 import javafx.stage.Stage;
+import lombok.Getter;
+
 import java.io.IOException;
 import java.util.Objects;
 
-public class AspiBotApplication extends Application {
 
+public class AspiBotApplication extends Application {
+    @Getter
     private MainWindowController mainWindowController;
 
     public static void main(String[] args) {
@@ -27,33 +31,42 @@ public class AspiBotApplication extends Application {
         Parent root = fxmlLoader.load();
         Scene scene = new Scene(root);
         mainWindowController = fxmlLoader.getController();
-        AspiBot aspiBot = new AspiBot(mainWindowController.getBoard());
+        Board board = new Board(mainWindowController.getBoard());
+        AspiBot aspiBot = new AspiBot(board);
         drawVacuumDustGem(aspiBot.getXPosition(), aspiBot.getYPosition());
         stage.setTitle("AspiBot");
         stage.setScene(scene);
         stage.show();
-
-        aspiBot.move(AspiBot.Direction.RIGHT);
-        for(int i = 0; i < 5; i++) {
-            for(int j = 0; j < 5; j++) {
-                Tile tile = mainWindowController.getBoard().getTile(i, j);
-                if(tile.isDust() && tile.isGem() && tile.isVacuum()) {
-                    drawVacuumDustGem(i, j);
-                }else if(tile.isDust() && tile.isVacuum() && !tile.isGem()) {
-                    drawVacuumDust(i, j);
-                }else if(tile.isGem() && tile.isVacuum() && !tile.isDust()) {
-                    drawVacuumGem(i, j);
-                }else if(tile.isDust() && tile.isGem() && !tile.isVacuum()) {
-                    drawDustGem(i, j);
-                }else if(tile.isDust() && !tile.isGem() && !tile.isVacuum()) {
-                    drawDust(i, j);
-                }else if(tile.isGem() && !tile.isDust() && !tile.isVacuum()) {
-                    drawGem(i, j);
-                }else if(tile.isVacuum() && !tile.isGem() && !tile.isDust()) {
-                    drawVacuum(i, j);
-                }
+        MyThread boardUpdateThread = new MyThread("boardUpdate") {
+            @Override
+            public void run() {
+                super.runUpdateBoard(AspiBotApplication.this, aspiBot);
             }
-        }
+        };
+        MyThread vacuumBoardUpdateThread = new MyThread("vacuumBoardUpdate") {
+            @Override
+            public void run() {
+                super.runVacuumBoardUpdate(aspiBot, board);
+            }
+        };
+        MyThread vacuumThread = new MyThread("aspiBot") {
+            @Override
+            public void run() {
+                super.runAspibot(aspiBot, board);
+            }
+        };
+        MyThread itemsThread = new MyThread("items") {
+            @Override
+            public void run() {
+                super.runItemsGeneration(board);
+            }
+        };
+
+        stage.setOnCloseRequest(windowEvent -> {vacuumThread.stop();itemsThread.stop();boardUpdateThread.stop();vacuumBoardUpdateThread.stop();});
+    }
+
+    public void drawEmpty(int x, int y) {
+        mainWindowController.getBoard().getTile(x, y).setFill(null);
     }
 
     public void drawDust(int x, int y) {

@@ -27,30 +27,62 @@ public class AspiBot {
         this.xPosition = r.nextInt(board.getWidth());
         this.yPosition = r.nextInt(board.getHeight());
         this.board = board;
+        this.batteryLevel = 0;
+    }
+
+    public void updateBoard(Board board) {
+        this.board = new Board(board);
+    }
+
+    public void vacuumize() {
+        if (board.getTile(xPosition, yPosition).isDust()) {
+            board.getTile(xPosition, yPosition).setDust(false);
+            //batteryLevel += 1;
+        }
+        if (board.getTile(xPosition, yPosition).isGem()) {
+            board.getTile(xPosition, yPosition).setGem(false);
+            //batteryLevel += 1;
+        }
+    }
+
+    public void pickUpGem() {
+        if (board.getTile(xPosition, yPosition).isGem()) {
+            board.getTile(xPosition, yPosition).setGem(false);
+            //batteryLevel += 1;
+        }
     }
 
     public void move(Direction direction) {
         switch (direction) {
             case UP:
-                board.getTile(xPosition, yPosition).setVacuum(false);
-                this.yPosition--;
-                board.getTile(xPosition, yPosition).setVacuum(true);
+                if (yPosition > 0) {
+                    board.getTile(xPosition, yPosition).setVacuum(false);
+                    this.yPosition--;
+                    board.getTile(xPosition, yPosition).setVacuum(true);
+                }
                 break;
             case DOWN:
-                board.getTile(xPosition, yPosition).setVacuum(false);
-                this.yPosition++;
-                board.getTile(xPosition, yPosition).setVacuum(true);
+                if (yPosition < board.getHeight() - 1) {
+                    board.getTile(xPosition, yPosition).setVacuum(false);
+                    this.yPosition++;
+                    board.getTile(xPosition, yPosition).setVacuum(true);
+                }
                 break;
             case LEFT:
-                board.getTile(xPosition, yPosition).setVacuum(false);
-                this.xPosition--;
-                board.getTile(xPosition, yPosition).setVacuum(true);
+                if (xPosition > 0) {
+                    board.getTile(xPosition, yPosition).setVacuum(false);
+                    this.xPosition--;
+                    board.getTile(xPosition, yPosition).setVacuum(true);
+                }
                 break;
             case RIGHT:
-                board.getTile(xPosition, yPosition).setVacuum(false);
-                this.xPosition++;
-                board.getTile(xPosition, yPosition).setVacuum(true);
+                if (xPosition < board.getWidth() - 1) {
+                    board.getTile(xPosition, yPosition).setVacuum(false);
+                    this.xPosition++;
+                    board.getTile(xPosition, yPosition).setVacuum(true);
+                }
                 break;
         }
     }
+
 }

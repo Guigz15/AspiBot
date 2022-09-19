@@ -16,5 +16,13 @@ public class Tile extends Rectangle {
         this.vacuum = false;
         this.dust = false;
         this.gem = false;
+        this.setFill(null);
+    }
+
+    public Tile(Tile tile) {
+        this.vacuum = tile.isVacuum();
+        this.dust = tile.isDust();
+        this.gem = tile.isGem();
+        this.setFill(tile.getFill());
     }
 }
