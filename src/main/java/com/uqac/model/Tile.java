@@ -12,6 +12,7 @@ public class Tile extends Rectangle {
     @Getter @Setter
     private boolean gem;
 
+    //Create an empty tile
     public Tile() {
         this.vacuum = false;
         this.dust = false;
@@ -19,6 +20,7 @@ public class Tile extends Rectangle {
         this.setFill(null);
     }
 
+    //Create a new tile from a given tile
     public Tile(Tile tile) {
         this.vacuum = tile.isVacuum();
         this.dust = tile.isDust();

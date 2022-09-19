@@ -9,7 +9,7 @@ public abstract class MyThread implements Runnable{
     private Thread thread;
     private boolean running;
     @Getter
-    private String name;
+    private final String name;
 
     public void stop() {
         running = false;
@@ -23,10 +23,12 @@ public abstract class MyThread implements Runnable{
         thread.start();
     }
 
+    //This function synchronize the vacuum's board and the board where new items (dust and gem) are generated
     public void runVacuumBoardUpdate(AspiBot aspibot, Board board) {
         running = true;
         while (running) {
             try {
+                //This time needs to be changed with the learning
                 Thread.sleep(1000);
                 aspibot.updateBoard(board);
             } catch (InterruptedException e) {
@@ -35,6 +37,7 @@ public abstract class MyThread implements Runnable{
         }
     }
 
+    //This function is used to update the visual board
     public void runUpdateBoard(AspiBotApplication aspiBotApplication, AspiBot aspiBot) {
         running = true;
         while (running) {
@@ -69,13 +72,14 @@ public abstract class MyThread implements Runnable{
         }
     }
 
+    //This function allow to move the vacuum and decide what's the next move. It updates the visual board and the board of the vacuum.
     public void runAspibot(AspiBot aspiBot, Board board) {
         running = true;
         while (running) {
             try {
                 Thread.sleep(500);
                 Random r = new Random();
-                //Here is the line to choose the direction
+                //Here is the line to choose the direction. It's not a definitive version, but it's a start.
                 int g = r.nextInt(4);
                 aspiBot.move(AspiBot.Direction.values()[g]);
                 Tile tile = aspiBot.getBoard().getTile(aspiBot.getXPosition(), aspiBot.getYPosition());
@@ -97,12 +101,14 @@ public abstract class MyThread implements Runnable{
         }
     }
 
+    //This function is used to generate new items (dust and gem) on the board
     public void runItemsGeneration(Board board)
     {
         running = true;
         while (running) {
             try {
                 Random r = new Random();
+                //The time between the items generation is not definitive, I think we have to discuss about it. Now the max time is 10 seconds.
                 int time =  r.nextInt(11);
                 Thread.sleep(time * 1000);
                 System.out.println("Generate items");

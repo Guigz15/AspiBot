@@ -14,6 +14,7 @@ public class Board {
     @Getter @Setter
     private int width;
 
+    //Create an empty board
     public Board(int height, int width) {
         this.height = height;
         this.width = width;
@@ -29,6 +30,7 @@ public class Board {
         }
     }
 
+    //Create a new board from a given board
     public Board(Board board) {
         this.height = board.getHeight();
         this.width = board.getWidth();
