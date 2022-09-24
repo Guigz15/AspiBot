@@ -3,6 +3,7 @@ package com.uqac;
 import com.uqac.controller.MainWindowController;
 import com.uqac.model.AspiBot;
 import com.uqac.model.Board;
+import com.uqac.model.Effector;
 import com.uqac.model.MyThread;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -15,6 +16,7 @@ import lombok.Getter;
 
 import java.io.IOException;
 import java.util.Objects;
+import java.util.Random;
 
 
 public class AspiBotApplication extends Application {
@@ -36,20 +38,21 @@ public class AspiBotApplication extends Application {
             board.generateItems();
         }
         AspiBot aspiBot = new AspiBot(board);
-        //drawVacuumDustGem(aspiBot.getXPosition(), aspiBot.getYPosition());
+        mainWindowController.drawVacuum(aspiBot.getSensor().getXPosition(), aspiBot.getSensor().getYPosition());
         stage.setTitle("AspiBot");
         stage.setScene(scene);
         stage.show();
+
 
 
         //Create a new thread to update the vacuum position and decide the next move
         MyThread vacuumThread = new MyThread("aspiBot") {
             @Override
             public void run() {
-                super.runAspibot(aspiBot, board);
+                super.runTest(aspiBot, mainWindowController, board);
             }
         };
-
+        /*
         //Create a new thread to update the visual board
         MyThread boardUpdateThread = new MyThread("boardUpdate") {
             @Override
@@ -80,56 +83,7 @@ public class AspiBotApplication extends Application {
 
 
 
-        stage.setOnCloseRequest(windowEvent -> {vacuumThread.stop();itemsThread.stop();boardUpdateThread.stop();/*vacuumBoardUpdateThread.stop();*/});
+        //stage.setOnCloseRequest(windowEvent -> {vacuumThread.stop();itemsThread.stop();boardUpdateThread.stop();/*vacuumBoardUpdateThread.stop();*/});
 
-    }
-
-    //Different methods to draw the different elements on the board
-    public void drawEmpty(int x, int y) {
-        mainWindowController.getBoard().getTile(x, y).setFill(null);
-    }
-
-    public void drawDust(int x, int y) {
-        mainWindowController.getBoard().getTiles().get(x).get(y).setFill(new ImagePattern(new Image("images/dust.png")));
-        mainWindowController.getBoard().getTile(x, y).setDust(true);
-    }
-
-    public void drawGem(int x, int y) {
-        mainWindowController.getBoard().getTiles().get(x).get(y).setFill(new ImagePattern(new Image("images/gem.png")));
-        mainWindowController.getBoard().getTile(x, y).setGem(true);
-    }
-
-    public void drawVacuum(int x, int y) {
-        try {
-            mainWindowController.getBoard().getTiles().get(x).get(y).setFill(new ImagePattern(new Image("images/vacuum.png")));
-            mainWindowController.getBoard().getTile(x, y).setVacuum(true);
-
-        }catch (NullPointerException e){
-            System.out.println("Null pointer exception draw vacuum");
-        }
-    }
-
-    public void drawDustGem(int x, int y) {
-        mainWindowController.getBoard().getTiles().get(x).get(y).setFill(new ImagePattern(new Image("images/dust_gem.png")));
-        mainWindowController.getBoard().getTile(x, y).setDust(true);
-        mainWindowController.getBoard().getTile(x, y).setGem(true);
-    }
-
-    public void drawVacuumDust(int x, int y) {
-        mainWindowController.getBoard().getTiles().get(x).get(y).setFill(new ImagePattern(new Image("images/vacuum_dust.png")));
-        mainWindowController.getBoard().getTile(x, y).setVacuum(true);
-        mainWindowController.getBoard().getTile(x, y).setDust(true);
-    }
-
-    public void drawVacuumDustGem(int x, int y) {
-        mainWindowController.getBoard().getTiles().get(x).get(y).setFill(new ImagePattern(new Image("images/vacuum_dust_gem.png")));
-        mainWindowController.getBoard().getTile(x, y).setVacuum(true);
-        mainWindowController.getBoard().getTile(x, y).setDust(true);
-        mainWindowController.getBoard().getTile(x, y).setGem(true);
-    }
-    public void drawVacuumGem(int x, int y) {
-        mainWindowController.getBoard().getTiles().get(x).get(y).setFill(new ImagePattern(new Image("images/vacuum_gem.png")));
-        mainWindowController.getBoard().getTile(x, y).setVacuum(true);
-        mainWindowController.getBoard().getTile(x, y).setGem(true);
     }
 }

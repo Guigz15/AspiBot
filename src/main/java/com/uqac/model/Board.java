@@ -25,6 +25,8 @@ public class Board {
             for (int j = 0; j < width; j++) {
                 Tile tile = new Tile();
                 tile.setFill(null);
+                tile.setX(i);
+                tile.setY(j);
                 row.add(tile);
             }
             tiles.add(row);

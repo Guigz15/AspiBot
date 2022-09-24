@@ -1,6 +1,7 @@
 package com.uqac.model;
 
 import com.uqac.AspiBotApplication;
+import com.uqac.controller.MainWindowController;
 import javafx.scene.paint.Color;
 import lombok.Getter;
 
@@ -37,7 +38,22 @@ public class MyThread implements Runnable {
             }
         }
     }
-
+    public void runTest(AspiBot aspiBot, MainWindowController mainWindowController, Board board) {
+        running = true;
+        while(running) {
+            try {
+                Thread.sleep(1000);
+                Tile tile = board.getTile(aspiBot.getSensor().getXPosition(), aspiBot.getSensor().getYPosition());
+                Random random = new Random();
+                aspiBot.getEffector().move(aspiBot, Effector.Direction.values()[random.nextInt(Effector.Direction.values().length)]);
+                aspiBot.getSensor().updateBoard(board);
+                mainWindowController.drawVacuum(aspiBot.getSensor().getXPosition(), aspiBot.getSensor().getYPosition());
+                System.out.println("x: " + aspiBot.getSensor().getXPosition() + " y: " + aspiBot.getSensor().getYPosition());
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
     //This function is used to update the visual board
     public void runUpdateBoard(AspiBotApplication aspiBotApplication, AspiBot aspiBot) {
         running = true;

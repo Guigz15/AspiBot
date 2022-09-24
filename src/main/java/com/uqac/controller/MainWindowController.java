@@ -4,7 +4,9 @@ import com.uqac.model.Board;
 import com.uqac.model.Tile;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.ImagePattern;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,5 +32,54 @@ public class MainWindowController implements Initializable {
                 gridPane.add(board.getTile(i, j), i, j);
             }
         }
+    }
+
+    //Different methods to draw the different elements on the board
+    public void drawEmpty(int x, int y) {
+        this.getBoard().getTile(x, y).setFill(null);
+    }
+
+    public void drawDust(int x, int y) {
+        this.getBoard().getTiles().get(x).get(y).setFill(new ImagePattern(new Image("images/dust.png")));
+        this.getBoard().getTile(x, y).setDust(true);
+    }
+
+    public void drawGem(int x, int y) {
+        this.getBoard().getTiles().get(x).get(y).setFill(new ImagePattern(new Image("images/gem.png")));
+        this.getBoard().getTile(x, y).setGem(true);
+    }
+
+    public void drawVacuum(int x, int y) {
+        try {
+            this.getBoard().getTiles().get(x).get(y).setFill(new ImagePattern(new Image("images/vacuum.png")));
+            this.getBoard().getTile(x, y).setVacuum(true);
+
+        }catch (NullPointerException e){
+            System.out.println("Null pointer exception draw vacuum");
+        }
+    }
+
+    public void drawDustGem(int x, int y) {
+        this.getBoard().getTiles().get(x).get(y).setFill(new ImagePattern(new Image("images/dust_gem.png")));
+        this.getBoard().getTile(x, y).setDust(true);
+        this.getBoard().getTile(x, y).setGem(true);
+    }
+
+    public void drawVacuumDust(int x, int y) {
+        this.getBoard().getTiles().get(x).get(y).setFill(new ImagePattern(new Image("images/vacuum_dust.png")));
+        this.getBoard().getTile(x, y).setVacuum(true);
+        this.getBoard().getTile(x, y).setDust(true);
+    }
+
+    public void drawVacuumDustGem(int x, int y) {
+        this.getBoard().getTiles().get(x).get(y).setFill(new ImagePattern(new Image("images/vacuum_dust_gem.png")));
+        this.getBoard().getTile(x, y).setVacuum(true);
+        this.getBoard().getTile(x, y).setDust(true);
+        this.getBoard().getTile(x, y).setGem(true);
+    }
+    public void drawVacuumGem(int x, int y) {
+        this.getBoard().getTiles().get(x).get(y).setFill(new ImagePattern(new Image("images/vacuum_gem.png")));
+        this.getBoard().getTile(x, y).setVacuum(true);
+        this.getBoard().getTile(x, y).setGem(true);
     }
 }

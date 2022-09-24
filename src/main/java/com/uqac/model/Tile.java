@@ -17,10 +17,9 @@ public class Tile extends Rectangle {
         this.vacuum = false;
         this.dust = false;
         this.gem = false;
-        this.setX(10);
         this.setFill(null);
         this.setOnMouseClicked(mouseEvent -> {
-            System.out.println("vacuum: " + vacuum + ", dust: " + dust + ", gem: " + gem);
+            System.out.println(this);
         });
     }
 

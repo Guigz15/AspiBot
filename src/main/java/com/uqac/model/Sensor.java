@@ -17,6 +17,12 @@ public class Sensor {
         this.yPosition = yPosition;
     }
 
+    public Sensor(Sensor sensor) {
+        this.board = sensor.getBoard();
+        this.xPosition = sensor.getXPosition();
+        this.yPosition = sensor.getYPosition();
+    }
+
     public void updateBoard(Board board) {
         this.board = new Board(board);
     }
