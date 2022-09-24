@@ -15,8 +15,8 @@ public class AspiBot {
 
     public AspiBot(Board board) {
         Random r = new Random();
-        Tile StartTile = new Tile(board.getTile(r.nextInt(board.getHeight()), r.nextInt(board.getWidth())));
-        this.sensor = new Sensor(board,StartTile);
+        Tile startTile = new Tile(board.getTile(r.nextInt(board.getHeight()), r.nextInt(board.getWidth())));
+        this.sensor = new Sensor(board, startTile);
         this.effector = new Effector(this.sensor);
         this.batteryLevel = 0;
     }

@@ -39,27 +39,26 @@ public class Tile extends Rectangle {
     }
 
     public void draw() {
-
         if (isDust() && isGem() && isVacuum()) {
-            //setFill(null);
+            setFill(null);
             setFill(new ImagePattern(new Image("images/vacuum_dust_gem.png")));
         } else if (isDust() && isVacuum() && !isGem()) {
-            //setFill(null);
+            setFill(null);
             setFill(new ImagePattern(new Image("images/vacuum_dust.png")));
         } else if (isGem() && isVacuum() && !isDust()) {
-            //setFill(null);
+            setFill(null);
             setFill(new ImagePattern(new Image("images/vacuum_gem.png")));
         } else if (isDust() && isGem() && !isVacuum()) {
-            //setFill(null);
+            setFill(null);
             setFill(new ImagePattern(new Image("images/dust_gem.png")));
         } else if (isDust() && !isGem() && !isVacuum()) {
-            //setFill(null);
+            setFill(null);
             setFill(new ImagePattern(new Image("images/dust.png")));
         } else if (isGem() && !isDust() && !isVacuum()) {
-            //setFill(null);
+            setFill(null);
             setFill(new ImagePattern(new Image("images/gem.png")));
         } else if (isVacuum() && !isGem() && !isDust()) {
-            //setFill(null);
+            setFill(null);
             setFill(new ImagePattern(new Image("images/vacuum.png")));
         } else if (!isVacuum() && !isGem() && !isDust()) {
             setFill(null);

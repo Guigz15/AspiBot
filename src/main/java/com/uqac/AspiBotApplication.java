@@ -29,15 +29,6 @@ public class AspiBotApplication extends Application {
         Parent root = fxmlLoader.load();
         Scene scene = new Scene(root);
         mainWindowController = fxmlLoader.getController();
-        Board board = new Board(mainWindowController.getBoard());
-        /*
-        //Generate some dust and gems
-        for(int i = 0; i < 5; i++) {
-            board.generateItems();
-        }*/
-        AspiBot aspiBot = new AspiBot(board);
-        mainWindowController.getBoard().getTile(aspiBot.getSensor().getXPosition(), aspiBot.getSensor().getYPosition()).setVacuum(true);
-        mainWindowController.getBoard().getTile(aspiBot.getSensor().getXPosition(), aspiBot.getSensor().getYPosition()).draw();
         stage.setTitle("AspiBot");
         stage.setScene(scene);
         stage.show();
@@ -45,7 +36,7 @@ public class AspiBotApplication extends Application {
 
 
         //Create a new thread to update the vacuum position and decide the next move
-        MyThread vacuumThread = new MyThread("aspiBot") {
+        /*MyThread vacuumThread = new MyThread("aspiBot") {
             @Override
             public void run() {
                 super.runAspibot(aspiBot, mainWindowController);
@@ -58,9 +49,13 @@ public class AspiBotApplication extends Application {
             public void run() {
                 super.runUpdateBoard(mainWindowController, aspiBot);
             }
-        };
+        };*/
 
 
+        //aspiBot.aStar(aspiBot.getBoard(), aspiBot.getXPosition(), aspiBot.getYPosition());
+
+        //}
+        /*
         //Create a new thread to generate dust and gems on the board
         MyThread itemsThread = new MyThread("items") {
             @Override
@@ -68,18 +63,17 @@ public class AspiBotApplication extends Application {
                 super.runItemsGeneration(board);
             }
         };
-        
+
         //Create a new thread to update the vacuum board
         MyThread vacuumBoardUpdateThread = new MyThread("vacuumBoardUpdate") {
             @Override
             public void run() {
                 super.runVacuumBoardUpdate(aspiBot, board);
             }
-        };
+        };*/
 
 
 
-        stage.setOnCloseRequest(windowEvent -> {vacuumThread.stop();/*itemsThread.stop()*/;boardUpdateThread.stop();vacuumBoardUpdateThread.stop();});
-
+        stage.setOnCloseRequest(windowEvent -> mainWindowController.stop());
     }
 }
