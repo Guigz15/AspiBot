@@ -34,9 +34,11 @@ public class AspiBotApplication extends Application {
         Scene scene = new Scene(root);
         mainWindowController = fxmlLoader.getController();
         Board board = new Board(mainWindowController.getBoard());
+        /*
+        //Generate some dust and gems
         for(int i = 0; i < 5; i++) {
             board.generateItems();
-        }
+        }*/
         AspiBot aspiBot = new AspiBot(board);
         mainWindowController.drawVacuum(aspiBot.getSensor().getXPosition(), aspiBot.getSensor().getYPosition());
         stage.setTitle("AspiBot");
@@ -49,22 +51,23 @@ public class AspiBotApplication extends Application {
         MyThread vacuumThread = new MyThread("aspiBot") {
             @Override
             public void run() {
-                super.runTest(aspiBot, mainWindowController, board);
+                super.runAspibot(aspiBot, mainWindowController);
             }
         };
-        /*
+
         //Create a new thread to update the visual board
         MyThread boardUpdateThread = new MyThread("boardUpdate") {
             @Override
             public void run() {
-                super.runUpdateBoard(AspiBotApplication.this, aspiBot);
+                super.runUpdateBoard(mainWindowController, aspiBot);
             }
         };
+
 
         //aspiBot.aStar(aspiBot.getBoard(), aspiBot.getXPosition(), aspiBot.getYPosition());
 
         //}
-
+        /*
         //Create a new thread to generate dust and gems on the board
         MyThread itemsThread = new MyThread("items") {
             @Override
@@ -74,7 +77,7 @@ public class AspiBotApplication extends Application {
         };
 
         //Create a new thread to update the vacuum board
-        /*MyThread vacuumBoardUpdateThread = new MyThread("vacuumBoardUpdate") {
+        MyThread vacuumBoardUpdateThread = new MyThread("vacuumBoardUpdate") {
             @Override
             public void run() {
                 super.runVacuumBoardUpdate(aspiBot, board);

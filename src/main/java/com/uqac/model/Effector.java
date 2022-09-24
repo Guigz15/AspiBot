@@ -9,7 +9,7 @@ public class Effector {
     }
 
     public void move(AspiBot aspiBot, Direction direction) {
-        Sensor sensor = this.sensor;
+        Sensor sensor = aspiBot.getSensor();
         if(direction == Direction.UP && sensor.getYPosition() > 0) {
             sensor.getBoard().getTile(sensor.getXPosition(), sensor.getYPosition()).setVacuum(false);
             //sensor.setYPosition(sensor.getYPosition() - 1);
@@ -30,10 +30,10 @@ public class Effector {
             //sensor.setXPosition(sensor.getXPosition() + 1);
             sensor.getBoard().getTile(sensor.getXPosition(), sensor.getYPosition()).setVacuum(true);
         }
+        //System.out.println("AspiBot moved to " + sensor.getXPosition() + " " + sensor.getYPosition());
     }
 
     public void vacuumize(AspiBot aspiBot) {
-        Sensor sensor = this.sensor;
         if (sensor.getBoard().getTile(sensor.getXPosition(), sensor.getYPosition()).isDust()) {
             sensor.getBoard().getTile(sensor.getXPosition(), sensor.getYPosition()).setDust(false);
             //aspiBot.setBatteryLevel(aspiBot.getBatteryLevel() + 1);
@@ -45,7 +45,6 @@ public class Effector {
     }
 
     public void pickUpGem(AspiBot aspiBot) {
-        Sensor sensor = this.sensor;
         if (sensor.getBoard().getTile(sensor.getXPosition(), sensor.getYPosition()).isGem()) {
             sensor.getBoard().getTile(sensor.getXPosition(), sensor.getYPosition()).setGem(false);
             //aspiBot.setBatteryLevel(aspiBot.getBatteryLevel() + 1);

@@ -18,8 +18,10 @@ public class Tile extends Rectangle {
         this.dust = false;
         this.gem = false;
         this.setFill(null);
+        //Need to be removed later
         this.setOnMouseClicked(mouseEvent -> {
             System.out.println(this);
+            System.out.println("vacuum: " + this.isVacuum() + " dust: " + this.isDust() + " gem: " + this.isGem());
         });
     }
 
