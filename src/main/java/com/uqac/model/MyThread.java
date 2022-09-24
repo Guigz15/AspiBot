@@ -1,11 +1,12 @@
 package com.uqac.model;
 
 import com.uqac.AspiBotApplication;
+import javafx.scene.paint.Color;
 import lombok.Getter;
 
 import java.util.Random;
 
-public abstract class MyThread implements Runnable{
+public class MyThread implements Runnable {
     private Thread thread;
     private boolean running;
     @Getter
@@ -30,8 +31,8 @@ public abstract class MyThread implements Runnable{
             try {
                 //This time needs to be changed with the learning
                 Thread.sleep(1000);
-                aspibot.updateBoard(board);
-            } catch (InterruptedException e) {
+                //aspibot.updateBoard(board);
+            } catch (InterruptedException | NullPointerException e) {
                 e.printStackTrace();
             }
         }
@@ -41,33 +42,49 @@ public abstract class MyThread implements Runnable{
     public void runUpdateBoard(AspiBotApplication aspiBotApplication, AspiBot aspiBot) {
         running = true;
         while (running) {
-            for (int i = 0; i < 5; i++) {
-                for (int j = 0; j < 5; j++) {
-                    Tile tile = aspiBot.getBoard().getTile(i, j);
-                    if(aspiBot.getXPosition() != i || aspiBot.getYPosition() != j) {
-                        tile.setVacuum(false);
-                    }else {
-                        tile.setVacuum(true);
-                    }
+            try {
+                Thread.sleep(1);
+                for (int i = 0; i < 5; i++) {
+                    for (int j = 0; j < 5; j++) {
+                        /*Tile tile = aspiBot.getBoard().getTile(i, j);
+                        if(aspiBot.getXPosition() != i || aspiBot.getYPosition() != j) {
+                            tile.setVacuum(false);
+                        }else {
+                            tile.setVacuum(true);
+                        }
 
-                    if (tile.isDust() && tile.isGem() && tile.isVacuum()) {
-                        aspiBotApplication.drawVacuumDustGem(i, j);
-                    } else if (tile.isDust() && tile.isVacuum() && !tile.isGem()) {
-                        aspiBotApplication.drawVacuumDust(i, j);
-                    } else if (tile.isGem() && tile.isVacuum() && !tile.isDust()) {
-                        aspiBotApplication.drawVacuumGem(i, j);
-                    } else if (tile.isDust() && tile.isGem() && !tile.isVacuum()) {
-                        aspiBotApplication.drawDustGem(i, j);
-                    } else if (tile.isDust() && !tile.isGem() && !tile.isVacuum()) {
-                        aspiBotApplication.drawDust(i, j);
-                    } else if (tile.isGem() && !tile.isDust() && !tile.isVacuum()) {
-                        aspiBotApplication.drawGem(i, j);
-                    } else if (tile.isVacuum() && !tile.isGem() && !tile.isDust()) {
-                        aspiBotApplication.drawVacuum(i, j);
-                    } else if (!tile.isVacuum() && !tile.isGem() && !tile.isDust()) {
-                        aspiBotApplication.drawEmpty(i, j);
+                        if (tile.isDust() && tile.isGem() && tile.isVacuum()) {
+                            tile.setFill(null);
+                            aspiBotApplication.drawVacuumDustGem(i, j);
+                        } else if (tile.isDust() && tile.isVacuum() && !tile.isGem()) {
+                            tile.setFill(null);
+                            aspiBotApplication.drawVacuumDust(i, j);
+                        } else if (tile.isGem() && tile.isVacuum() && !tile.isDust()) {
+                            tile.setFill(null);
+                            aspiBotApplication.drawVacuumGem(i, j);
+                        } else if (tile.isDust() && tile.isGem() && !tile.isVacuum()) {
+                            tile.setFill(null);
+                            aspiBotApplication.drawDustGem(i, j);
+                        } else if (tile.isDust() && !tile.isGem() && !tile.isVacuum()) {
+                            tile.setFill(null);
+                            aspiBotApplication.drawDust(i, j);
+                        } else if (tile.isGem() && !tile.isDust() && !tile.isVacuum()) {
+                            tile.setFill(null);
+                            aspiBotApplication.drawGem(i, j);
+                        } else if (tile.isVacuum() && !tile.isGem() && !tile.isDust()) {
+                            tile.setFill(null);
+                            aspiBotApplication.drawVacuum(i, j);
+                        } else if (!tile.isVacuum() && !tile.isGem() && !tile.isDust()) {
+                            tile.setFill(null);
+                            aspiBotApplication.drawEmpty(i, j);
+                        }*/
                     }
                 }
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
         }
     }
@@ -77,13 +94,10 @@ public abstract class MyThread implements Runnable{
         running = true;
         while (running) {
             try {
+                //Don't put a value too low, it will create a crash of the application (200 ms is ok)
                 Thread.sleep(500);
-                Random r = new Random();
-                //Here is the line to choose the direction. It's not a definitive version, but it's a start.
-                int g = r.nextInt(4);
-                aspiBot.move(AspiBot.Direction.values()[g]);
-                Tile tile = aspiBot.getBoard().getTile(aspiBot.getXPosition(), aspiBot.getYPosition());
-                if (tile.isDust() && tile.isGem() && tile.isVacuum()) {
+                //Tile tile = aspiBot.getBoard().getTile(aspiBot.getXPosition(), aspiBot.getYPosition());
+                /*if (tile.isDust() && tile.isGem() && tile.isVacuum()) {
                     aspiBot.pickUpGem();
                     aspiBot.vacuumize();
                     board.getTile(aspiBot.getXPosition(), aspiBot.getYPosition()).setDust(false);
@@ -94,8 +108,8 @@ public abstract class MyThread implements Runnable{
                 } else if (tile.isGem() && tile.isVacuum() && !tile.isDust()) {
                     aspiBot.pickUpGem();
                     board.getTile(aspiBot.getXPosition(), aspiBot.getYPosition()).setGem(false);
-                }
-            } catch (InterruptedException e) {
+                }*/
+            } catch (InterruptedException | NullPointerException e) {
                 e.printStackTrace();
             }
         }
@@ -108,23 +122,21 @@ public abstract class MyThread implements Runnable{
         while (running) {
             try {
                 Random r = new Random();
-                //The time between the items generation is not definitive, I think we have to discuss about it. Now the max time is 10 seconds.
+                //The time between the items generation is not definitive, I think we have to discuss it. Now the max time is 10 seconds.
                 int time =  r.nextInt(11);
                 Thread.sleep(time * 1000);
                 System.out.println("Generate items");
-                for(int i = 0; i < 5; i++) {
-                    for(int j = 0; j < 5; j++) {
-                        if(new Random().nextDouble() < 0.1) {
-                            board.getTile(i, j).setDust(true);
-                        } else if(new Random().nextDouble() < 0.05){
-                            board.getTile(i, j).setGem(true);
-                        }
-
-                    }
-                }
+                board.generateItems();
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
+            }catch (NullPointerException e) {
+                e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public void run() {
+
     }
 }

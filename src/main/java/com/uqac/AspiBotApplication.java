@@ -32,25 +32,16 @@ public class AspiBotApplication extends Application {
         Scene scene = new Scene(root);
         mainWindowController = fxmlLoader.getController();
         Board board = new Board(mainWindowController.getBoard());
+        for(int i = 0; i < 5; i++) {
+            board.generateItems();
+        }
         AspiBot aspiBot = new AspiBot(board);
-        drawVacuumDustGem(aspiBot.getXPosition(), aspiBot.getYPosition());
+        //drawVacuumDustGem(aspiBot.getXPosition(), aspiBot.getYPosition());
         stage.setTitle("AspiBot");
         stage.setScene(scene);
         stage.show();
-        //Create a new thread to update the visual board
-        MyThread boardUpdateThread = new MyThread("boardUpdate") {
-            @Override
-            public void run() {
-                super.runUpdateBoard(AspiBotApplication.this, aspiBot);
-            }
-        };
-        //Create a new thread to update the vacuum board
-        MyThread vacuumBoardUpdateThread = new MyThread("vacuumBoardUpdate") {
-            @Override
-            public void run() {
-                super.runVacuumBoardUpdate(aspiBot, board);
-            }
-        };
+
+
         //Create a new thread to update the vacuum position and decide the next move
         MyThread vacuumThread = new MyThread("aspiBot") {
             @Override
@@ -58,6 +49,19 @@ public class AspiBotApplication extends Application {
                 super.runAspibot(aspiBot, board);
             }
         };
+
+        //Create a new thread to update the visual board
+        MyThread boardUpdateThread = new MyThread("boardUpdate") {
+            @Override
+            public void run() {
+                super.runUpdateBoard(AspiBotApplication.this, aspiBot);
+            }
+        };
+
+        //aspiBot.aStar(aspiBot.getBoard(), aspiBot.getXPosition(), aspiBot.getYPosition());
+
+        //}
+
         //Create a new thread to generate dust and gems on the board
         MyThread itemsThread = new MyThread("items") {
             @Override
@@ -66,7 +70,18 @@ public class AspiBotApplication extends Application {
             }
         };
 
-        stage.setOnCloseRequest(windowEvent -> {vacuumThread.stop();itemsThread.stop();boardUpdateThread.stop();vacuumBoardUpdateThread.stop();});
+        //Create a new thread to update the vacuum board
+        /*MyThread vacuumBoardUpdateThread = new MyThread("vacuumBoardUpdate") {
+            @Override
+            public void run() {
+                super.runVacuumBoardUpdate(aspiBot, board);
+            }
+        };*/
+
+
+
+        stage.setOnCloseRequest(windowEvent -> {vacuumThread.stop();itemsThread.stop();boardUpdateThread.stop();/*vacuumBoardUpdateThread.stop();*/});
+
     }
 
     //Different methods to draw the different elements on the board
@@ -85,8 +100,13 @@ public class AspiBotApplication extends Application {
     }
 
     public void drawVacuum(int x, int y) {
-        mainWindowController.getBoard().getTiles().get(x).get(y).setFill(new ImagePattern(new Image("images/vaccum.png")));
-        mainWindowController.getBoard().getTile(x, y).setVacuum(true);
+        try {
+            mainWindowController.getBoard().getTiles().get(x).get(y).setFill(new ImagePattern(new Image("images/vacuum.png")));
+            mainWindowController.getBoard().getTile(x, y).setVacuum(true);
+
+        }catch (NullPointerException e){
+            System.out.println("Null pointer exception draw vacuum");
+        }
     }
 
     public void drawDustGem(int x, int y) {
