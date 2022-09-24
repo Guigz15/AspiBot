@@ -1,30 +1,30 @@
-package com.uqac.model;
+package com.uqac.controller;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.uqac.model.Board;
+import com.uqac.model.Sensor;
+import com.uqac.model.Tile;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
 
-public class AspiBot {
-    @Getter @Setter
+public class Decision
+{
     private Sensor sensor;
-    @Getter @Setter
-    private Effector effector;
-    @Getter @Setter
-    private int batteryLevel;
 
-    public AspiBot(Board board) {
-        Random r = new Random();
-        Tile StartTile = new Tile(board.getTile(r.nextInt(board.getHeight()), r.nextInt(board.getWidth())));
-        this.sensor = new Sensor(board,StartTile);
-        this.effector = new Effector(this.sensor);
-        this.batteryLevel = 0;
+    /*public List<Tile> bidirectionnal_search(Board board)
+    {
+        Tile goal = findFarestDust();
+        List<Tile> alreadySeenStart = new ArrayList<>();
+        List<Tile> alreadySeenGoal = new ArrayList<>();
+        List<List<Tile>> wayStart = new ArrayList<>();
+        List<List<Tile>> wayGoal = new ArrayList<>();
+        int iteration = 0;
+        alreadySeenStart.add(sensor.getTile());
+
     }
-    
-    /*
+
+     */
+
     public Tile findFarestDust() {
         int x = (int)sensor.getTile().getX();
         int y = (int)sensor.getTile().getY();
@@ -48,6 +48,4 @@ public class AspiBot {
             return tile;
         }
     }
-    }*/
-
 }

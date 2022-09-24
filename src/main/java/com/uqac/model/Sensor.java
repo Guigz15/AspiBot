@@ -5,23 +5,30 @@ import lombok.Setter;
 
 public class Sensor {
     @Getter @Setter
-    private int xPosition;
-    @Getter @Setter
-    private int yPosition;
+    private Tile tile;
     @Getter @Setter
     private Board board;
 
-    public Sensor(Board board, int xPosition, int yPosition) {
+    public Sensor(Board board, Tile tile) {
         this.board = board;
-        this.xPosition = xPosition;
-        this.yPosition = yPosition;
+        this.tile = tile;
     }
 
     public Sensor(Sensor sensor) {
         this.board = sensor.getBoard();
-        this.xPosition = sensor.getXPosition();
-        this.yPosition = sensor.getYPosition();
+        this.tile = sensor.getTile();
     }
+    public int getXPosition()
+    {
+        return (int)tile.getX();
+    }
+
+    public int getYPosition()
+    {
+        return (int)tile.getY();
+    }
+
+
 
     public void updateBoard(Board board) {
         this.board = new Board(board);

@@ -12,22 +12,22 @@ public class Effector {
         Sensor sensor = this.sensor;
         if(direction == Direction.UP && sensor.getYPosition() > 0) {
             sensor.getBoard().getTile(sensor.getXPosition(), sensor.getYPosition()).setVacuum(false);
-            sensor.setYPosition(sensor.getYPosition() - 1);
+            //sensor.setYPosition(sensor.getYPosition() - 1);
             sensor.getBoard().getTile(sensor.getXPosition(), sensor.getYPosition()).setVacuum(true);
         }
         else if(direction == Direction.DOWN && sensor.getYPosition() < sensor.getBoard().getHeight() - 1) {
             sensor.getBoard().getTile(sensor.getXPosition(), sensor.getYPosition()).setVacuum(false);
-            sensor.setYPosition(sensor.getYPosition() + 1);
+            //sensor.setYPosition(sensor.getYPosition() + 1);
             sensor.getBoard().getTile(sensor.getXPosition(), sensor.getYPosition()).setVacuum(true);
         }
         else if(direction == Direction.LEFT && sensor.getXPosition() > 0) {
             sensor.getBoard().getTile(sensor.getXPosition(), sensor.getYPosition()).setVacuum(false);
-            sensor.setXPosition(sensor.getXPosition() - 1);
+            //sensor.setXPosition(sensor.getXPosition() - 1);
             sensor.getBoard().getTile(sensor.getXPosition(), sensor.getYPosition()).setVacuum(true);
         }
         else if(direction == Direction.RIGHT && sensor.getXPosition() < sensor.getBoard().getWidth() - 1) {
             sensor.getBoard().getTile(sensor.getXPosition(), sensor.getYPosition()).setVacuum(false);
-            sensor.setXPosition(sensor.getXPosition() + 1);
+            //sensor.setXPosition(sensor.getXPosition() + 1);
             sensor.getBoard().getTile(sensor.getXPosition(), sensor.getYPosition()).setVacuum(true);
         }
     }
