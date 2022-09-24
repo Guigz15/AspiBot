@@ -1,11 +1,8 @@
 package com.uqac.controller;
 
-import com.uqac.model.Board;
+import com.uqac.model.AspiBot;
 import com.uqac.model.Sensor;
 import com.uqac.model.Tile;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Decision
 {
@@ -25,7 +22,8 @@ public class Decision
 
      */
 
-    public Tile findFarestDust() {
+    public Tile findFarestDust(AspiBot aspiBot) {
+        Sensor sensor = aspiBot.getSensor();
         int x = (int)sensor.getTile().getX();
         int y = (int)sensor.getTile().getY();
         Tile tile = sensor.getBoard().getTile(x, y);

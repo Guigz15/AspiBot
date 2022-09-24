@@ -1,5 +1,7 @@
 package com.uqac.model;
 
+import javafx.scene.image.Image;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import lombok.Getter;
 import lombok.Setter;
@@ -34,5 +36,33 @@ public class Tile extends Rectangle {
         this.setOnMouseClicked(mouseEvent -> {
             System.out.println("vacuum: " + vacuum + " dust: " + dust + " gem: " + gem);
         });
+    }
+
+    public void draw() {
+
+        if (isDust() && isGem() && isVacuum()) {
+            //setFill(null);
+            setFill(new ImagePattern(new Image("images/vacuum_dust_gem.png")));
+        } else if (isDust() && isVacuum() && !isGem()) {
+            //setFill(null);
+            setFill(new ImagePattern(new Image("images/vacuum_dust.png")));
+        } else if (isGem() && isVacuum() && !isDust()) {
+            //setFill(null);
+            setFill(new ImagePattern(new Image("images/vacuum_gem.png")));
+        } else if (isDust() && isGem() && !isVacuum()) {
+            //setFill(null);
+            setFill(new ImagePattern(new Image("images/dust_gem.png")));
+        } else if (isDust() && !isGem() && !isVacuum()) {
+            //setFill(null);
+            setFill(new ImagePattern(new Image("images/dust.png")));
+        } else if (isGem() && !isDust() && !isVacuum()) {
+            //setFill(null);
+            setFill(new ImagePattern(new Image("images/gem.png")));
+        } else if (isVacuum() && !isGem() && !isDust()) {
+            //setFill(null);
+            setFill(new ImagePattern(new Image("images/vacuum.png")));
+        } else if (!isVacuum() && !isGem() && !isDust()) {
+            setFill(null);
+        }
     }
 }

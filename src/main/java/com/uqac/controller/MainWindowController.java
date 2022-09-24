@@ -33,48 +33,4 @@ public class MainWindowController implements Initializable {
             }
         }
     }
-
-    //Different methods to draw the different elements on the board
-    public void drawEmpty(int x, int y) {
-        this.getBoard().getTile(x, y).setFill(null);
-    }
-
-    public void drawDust(int x, int y) {
-        this.getBoard().getTile(x, y).setFill(new ImagePattern(new Image("images/dust.png")));
-        this.getBoard().getTile(x, y).setDust(true);
-    }
-
-    public void drawGem(int x, int y) {
-        this.getBoard().getTile(x, y).setFill(new ImagePattern(new Image("images/gem.png")));
-        this.getBoard().getTile(x, y).setGem(true);
-    }
-
-    public void drawVacuum(int x, int y) {
-        this.getBoard().getTile(x, y).setFill(new ImagePattern(new Image("images/vacuum.png")));
-        this.getBoard().getTile(x, y).setVacuum(true);
-    }
-
-    public void drawDustGem(int x, int y) {
-        this.getBoard().getTile(x, y).setFill(new ImagePattern(new Image("images/dust_gem.png")));
-        this.getBoard().getTile(x, y).setDust(true);
-        this.getBoard().getTile(x, y).setGem(true);
-    }
-
-    public void drawVacuumDust(int x, int y) {
-        this.getBoard().getTile(x, y).setFill(new ImagePattern(new Image("images/vacuum_dust.png")));
-        this.getBoard().getTile(x, y).setVacuum(true);
-        this.getBoard().getTile(x, y).setDust(true);
-    }
-
-    public void drawVacuumDustGem(int x, int y) {
-        this.getBoard().getTile(x, y).setFill(new ImagePattern(new Image("images/vacuum_dust_gem.png")));
-        this.getBoard().getTile(x, y).setVacuum(true);
-        this.getBoard().getTile(x, y).setDust(true);
-        this.getBoard().getTile(x, y).setGem(true);
-    }
-    public void drawVacuumGem(int x, int y) {
-        this.getBoard().getTile(x, y).setFill(new ImagePattern(new Image("images/vacuum_gem.png")));
-        this.getBoard().getTile(x, y).setVacuum(true);
-        this.getBoard().getTile(x, y).setGem(true);
-    }
 }
