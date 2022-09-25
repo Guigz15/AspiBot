@@ -1,7 +1,5 @@
 package com.uqac.model;
 
-import javafx.scene.paint.Color;
-
 public class Effector {
     public enum Direction {UP, DOWN, LEFT, RIGHT};
     private Sensor sensor;
@@ -10,7 +8,7 @@ public class Effector {
         this.sensor = new Sensor(sensor);
     }
 
-    public void move(Board board, AspiBot aspiBot, Direction direction) {
+    public void move(AspiBot aspiBot, Direction direction) {
         Sensor sensor = aspiBot.getSensor();
         Tile oldTile = sensor.getTile();
         int oldX = (int)oldTile.getX();

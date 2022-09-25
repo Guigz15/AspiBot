@@ -68,7 +68,7 @@ public abstract class MyThread implements Runnable {
             try {
                 Thread.sleep(1000);
                 Random random = new Random();
-                aspiBot.getEffector().move(mainWindowController.getBoard(), aspiBot, Effector.Direction.values()[random.nextInt(Effector.Direction.values().length)]);
+                aspiBot.getEffector().move(aspiBot, Effector.Direction.values()[random.nextInt(Effector.Direction.values().length)]);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

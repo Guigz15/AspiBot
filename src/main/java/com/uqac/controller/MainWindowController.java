@@ -38,7 +38,7 @@ public class MainWindowController implements Initializable {
         this.aspiBot = new AspiBot(board);
         Tile startTile = this.board.getTile(aspiBot.getSensor().getXPosition(), aspiBot.getSensor().getYPosition());
         startTile.setVacuum(true);
-        startTile.draw();
+
 
         //Create a new thread to generate dust and gems on the board
         new Thread() {

@@ -33,47 +33,6 @@ public class AspiBotApplication extends Application {
         stage.setScene(scene);
         stage.show();
 
-
-
-        //Create a new thread to update the vacuum position and decide the next move
-        /*MyThread vacuumThread = new MyThread("aspiBot") {
-            @Override
-            public void run() {
-                super.runAspibot(aspiBot, mainWindowController);
-            }
-        };
-
-        //Create a new thread to update the visual board
-        MyThread boardUpdateThread = new MyThread("boardUpdate") {
-            @Override
-            public void run() {
-                super.runUpdateBoard(mainWindowController, aspiBot);
-            }
-        };*/
-
-
-        //aspiBot.aStar(aspiBot.getBoard(), aspiBot.getXPosition(), aspiBot.getYPosition());
-
-        //}
-        /*
-        //Create a new thread to generate dust and gems on the board
-        MyThread itemsThread = new MyThread("items") {
-            @Override
-            public void run() {
-                super.runItemsGeneration(board);
-            }
-        };
-
-        //Create a new thread to update the vacuum board
-        MyThread vacuumBoardUpdateThread = new MyThread("vacuumBoardUpdate") {
-            @Override
-            public void run() {
-                super.runVacuumBoardUpdate(aspiBot, board);
-            }
-        };*/
-
-
-
         stage.setOnCloseRequest(windowEvent -> mainWindowController.stop());
     }
 }
