@@ -1,5 +1,7 @@
 package com.uqac.model;
 
+import javafx.scene.image.Image;
+import javafx.scene.paint.ImagePattern;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -92,6 +94,7 @@ public class Board {
                 if(new Random().nextDouble() < 0.05){
                     this.getTile(i, j).setGem(true);
                 }
+                this.getTile(i, j).draw();
             }
         }
     }
