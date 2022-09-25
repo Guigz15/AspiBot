@@ -1,5 +1,7 @@
 package com.uqac.model;
 
+import javafx.scene.paint.Color;
+
 public class Effector {
     public enum Direction {UP, DOWN, LEFT, RIGHT};
     private Sensor sensor;
@@ -8,32 +10,51 @@ public class Effector {
         this.sensor = new Sensor(sensor);
     }
 
-    public void move(AspiBot aspiBot, Direction direction) {
+    public void move(Board board, AspiBot aspiBot, Direction direction) {
         Sensor sensor = aspiBot.getSensor();
-        System.out.println("x : " + sensor.getXPosition() + " y : " + sensor.getYPosition());
+        Tile oldTile = sensor.getTile();
+        int oldX = (int)oldTile.getX();
+        int oldY = (int)oldTile.getY();
+
         if(direction == Direction.UP && sensor.getYPosition() > 0) {
-            sensor.getBoard().getTile(sensor.getXPosition(), sensor.getYPosition()).setVacuum(false);
-            //sensor.setYPosition(sensor.getYPosition() - 1);
-            sensor.setTile(sensor.getBoard().getTile(sensor.getXPosition(), sensor.getYPosition() - 1));
+            oldTile.setVacuum(false);
+            sensor.getTile().setFill(null);
+            //board.getTile(oldX, oldY).setVacuum(false);
+            //board.getTile(oldX, oldY).setFill(null);
+
+            sensor.setTile(sensor.getBoard().getTile(oldX, oldY - 1));
             sensor.getTile().setVacuum(true);
+            //board.getTile(sensor.getXPosition(), sensor.getYPosition()).setVacuum(true);
         }
         else if(direction == Direction.DOWN && sensor.getYPosition() < sensor.getBoard().getHeight() - 1) {
-            sensor.getBoard().getTile(sensor.getXPosition(), sensor.getYPosition()).setVacuum(false);
-            //sensor.setYPosition(sensor.getYPosition() + 1);
-            sensor.setTile(sensor.getBoard().getTile(sensor.getXPosition(), sensor.getYPosition() + 1));
+            oldTile.setVacuum(false);
+            sensor.getTile().setFill(null);
+            //board.getTile(oldX, oldY).setVacuum(false);
+            //board.getTile(oldX, oldY).setFill(null);
+
+            sensor.setTile(sensor.getBoard().getTile(oldX, oldY + 1));
             sensor.getTile().setVacuum(true);
+            //board.getTile(sensor.getXPosition(), sensor.getYPosition()).setVacuum(true);
         }
         else if(direction == Direction.LEFT && sensor.getXPosition() > 0) {
-            sensor.getBoard().getTile(sensor.getXPosition(), sensor.getYPosition()).setVacuum(false);
-            //sensor.setXPosition(sensor.getXPosition() - 1);
-            sensor.setTile(sensor.getBoard().getTile(sensor.getXPosition() - 1, sensor.getYPosition()));
+            oldTile.setVacuum(false);
+            sensor.getTile().setFill(null);
+            //board.getTile(oldX, oldY).setVacuum(false);
+            //board.getTile(oldX, oldY).setFill(null);
+
+            sensor.setTile(sensor.getBoard().getTile(oldX - 1, oldY));
             sensor.getTile().setVacuum(true);
+            //board.getTile(sensor.getXPosition(), sensor.getYPosition()).setVacuum(true);
         }
         else if(direction == Direction.RIGHT && sensor.getXPosition() < sensor.getBoard().getWidth() - 1) {
-            sensor.getBoard().getTile(sensor.getXPosition(), sensor.getYPosition()).setVacuum(false);
-            //sensor.setXPosition(sensor.getXPosition() + 1);
-            sensor.setTile(sensor.getBoard().getTile(sensor.getXPosition() + 1, sensor.getYPosition()));
+            oldTile.setVacuum(false);
+            sensor.getTile().setFill(null);
+            //board.getTile(oldX, oldY).setVacuum(false);
+            //board.getTile(oldX, oldY).setFill(null);
+
+            sensor.setTile(sensor.getBoard().getTile(oldX + 1, oldY));
             sensor.getTile().setVacuum(true);
+            //board.getTile(sensor.getXPosition(), sensor.getYPosition()).setVacuum(true);
         }
         sensor.getTile().draw();
         //System.out.println("AspiBot moved to " + sensor.getXPosition() + " " + sensor.getYPosition());
@@ -57,5 +78,9 @@ public class Effector {
             sensor.getBoard().getTile(sensor.getXPosition(), sensor.getYPosition()).setGem(false);
             //aspiBot.setBatteryLevel(aspiBot.getBatteryLevel() + 1);
         }
+    }
+
+    public void updateBoard(Board board) {
+        this.sensor.updateBoard(board);
     }
 }

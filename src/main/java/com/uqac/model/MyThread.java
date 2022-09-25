@@ -28,8 +28,9 @@ public abstract class MyThread implements Runnable {
         while (running) {
             try {
                 //This time needs to be changed with the learning
-                Thread.sleep(10);
-                aspibot.getSensor().updateBoard(board);
+                Thread.sleep(1000);
+                System.out.println("Update vacuum board");
+                aspibot.getEffector().updateBoard(board);
             } catch (InterruptedException | NullPointerException e) {
                 e.printStackTrace();
             }
@@ -65,9 +66,9 @@ public abstract class MyThread implements Runnable {
     public void runAspibot(AspiBot aspiBot, MainWindowController mainWindowController) {
         while(running) {
             try {
-                Thread.sleep(10);
+                Thread.sleep(1000);
                 Random random = new Random();
-                aspiBot.getEffector().move(aspiBot, Effector.Direction.values()[random.nextInt(Effector.Direction.values().length)]);
+                aspiBot.getEffector().move(mainWindowController.getBoard(), aspiBot, Effector.Direction.values()[random.nextInt(Effector.Direction.values().length)]);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -81,7 +82,7 @@ public abstract class MyThread implements Runnable {
                 Random r = new Random();
                 //The time between the items generation is not definitive, I think we have to discuss it. Now the max time is 10 seconds.
                 int time =  r.nextInt(11);
-                Thread.sleep(time * 1000);
+                Thread.sleep(5000);
                 System.out.println("Generate items");
                 board.generateItems();
             } catch (InterruptedException e) {

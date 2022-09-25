@@ -1,5 +1,7 @@
 package com.uqac.model;
 
+import javafx.scene.image.Image;
+import javafx.scene.paint.ImagePattern;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,8 +29,6 @@ public class Sensor {
     {
         return (int)tile.getY();
     }
-
-
 
     public void updateBoard(Board board) {
         this.board = new Board(board);

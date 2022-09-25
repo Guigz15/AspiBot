@@ -1,5 +1,7 @@
 package com.uqac.model;
 
+import javafx.scene.image.Image;
+import javafx.scene.paint.ImagePattern;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,8 +17,10 @@ public class AspiBot {
 
     public AspiBot(Board board) {
         Random r = new Random();
-        Tile StartTile = new Tile(board.getTile(r.nextInt(board.getHeight()), r.nextInt(board.getWidth())));
-        this.sensor = new Sensor(board,StartTile);
+        Tile startTile = new Tile(board.getTile(r.nextInt(board.getHeight()), r.nextInt(board.getWidth())));
+        startTile.setVacuum(true);
+        startTile.setFill(new ImagePattern(new Image("images/vacuum.png")));
+        this.sensor = new Sensor(board, startTile);
         this.effector = new Effector(this.sensor);
         this.batteryLevel = 0;
     }
