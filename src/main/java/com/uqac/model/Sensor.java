@@ -20,12 +20,12 @@ public class Sensor {
     }
     public int getXPosition()
     {
-        return (int)tile.getX();
+        return tile.getXPosition();
     }
 
     public int getYPosition()
     {
-        return (int)tile.getY();
+        return tile.getYPosition();
     }
 
 

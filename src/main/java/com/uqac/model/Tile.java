@@ -23,6 +23,18 @@ public class Tile extends Rectangle {
         });
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Tile tile = (Tile) o;
+
+        if (getX() != tile.getX()) return false;
+        return getY() == tile.getY();
+    }
+
+
     //Create a new tile from a given tile
     public Tile(Tile tile) {
         this.vacuum = tile.isVacuum();
@@ -33,4 +45,14 @@ public class Tile extends Rectangle {
             System.out.println("vacuum: " + vacuum + " dust: " + dust + " gem: " + gem);
         });
     }
+    public int getXPosition()
+    {
+        return (int)getX();
+    }
+
+    public int getYPosition()
+    {
+        return (int)getY();
+    }
+
 }
