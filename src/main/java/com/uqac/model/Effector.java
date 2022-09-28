@@ -1,7 +1,7 @@
 package com.uqac.model;
 
 public class Effector {
-    public enum Direction {UP, DOWN, LEFT, RIGHT};
+    public enum Direction {UP, DOWN, LEFT, RIGHT}
     private Sensor sensor;
 
     public Effector(Sensor sensor) {
@@ -16,33 +16,28 @@ public class Effector {
 
         if(direction == Direction.UP && sensor.getYPosition() > 0) {
             oldTile.setVacuum(false);
-            sensor.getTile().draw();
-
+            oldTile.draw();
             sensor.setTile(sensor.getBoard().getTile(oldX, oldY - 1));
             sensor.getTile().setVacuum(true);
         }
         else if(direction == Direction.DOWN && sensor.getYPosition() < sensor.getBoard().getHeight() - 1) {
             oldTile.setVacuum(false);
-            sensor.getTile().draw();
-
+            oldTile.draw();
             sensor.setTile(sensor.getBoard().getTile(oldX, oldY + 1));
             sensor.getTile().setVacuum(true);
         }
         else if(direction == Direction.LEFT && sensor.getXPosition() > 0) {
             oldTile.setVacuum(false);
-            sensor.getTile().draw();
-
+            oldTile.draw();
             sensor.setTile(sensor.getBoard().getTile(oldX - 1, oldY));
             sensor.getTile().setVacuum(true);
         }
         else if(direction == Direction.RIGHT && sensor.getXPosition() < sensor.getBoard().getWidth() - 1) {
             oldTile.setVacuum(false);
-            sensor.getTile().draw();
-
+            oldTile.draw();
             sensor.setTile(sensor.getBoard().getTile(oldX + 1, oldY));
             sensor.getTile().setVacuum(true);
         }
-        System.out.println(sensor.getBoard().getTile(oldX, oldY).isVacuum());
         sensor.getTile().draw();
     }
 
@@ -64,9 +59,5 @@ public class Effector {
             sensor.getBoard().getTile(sensor.getXPosition(), sensor.getYPosition()).setGem(false);
             //aspiBot.setBatteryLevel(aspiBot.getBatteryLevel() + 1);
         }
-    }
-
-    public void updateBoard(Board board) {
-        this.sensor.updateBoard(board);
     }
 }

@@ -15,13 +15,11 @@ public class AspiBot {
 
     public AspiBot(Board board) {
         Random r = new Random();
-        Tile startTile = new Tile(board.getTile(r.nextInt(board.getHeight()), r.nextInt(board.getWidth())));
+        Tile startTile = board.getTile(r.nextInt(board.getHeight()), r.nextInt(board.getWidth()));
+        startTile.setVacuum(true);
+        startTile.draw();
         this.sensor = new Sensor(board, startTile);
         this.effector = new Effector(this.sensor);
         this.batteryLevel = 0;
-    }
-
-    public void updateBoard(Board board) {
-        this.sensor.updateBoard(board);
     }
 }
