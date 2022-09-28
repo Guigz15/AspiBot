@@ -1,5 +1,7 @@
 package com.uqac.model;
 
+import javafx.scene.image.Image;
+import javafx.scene.paint.ImagePattern;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -93,7 +95,16 @@ public class Board {
                 if(new Random().nextDouble() < 0.05){
                     this.getTile(i, j).setGem(true);
                 }
+                this.getTile(i, j).draw();
             }
         }
+    }
+
+    public int distanceBetweenTiles(Tile tile1, Tile tile2) {
+        return (int)(Math.abs(tile1.getX() - tile2.getX()) + Math.abs(tile1.getY() - tile2.getY()));
+    }
+
+    public int calculatePath(List<Tile> tilePath) {
+        return 0;
     }
 }

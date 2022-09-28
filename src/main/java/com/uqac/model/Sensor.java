@@ -27,10 +27,4 @@ public class Sensor {
     {
         return tile.getYPosition();
     }
-
-
-
-    public void updateBoard(Board board) {
-        this.board = new Board(board);
-    }
 }
