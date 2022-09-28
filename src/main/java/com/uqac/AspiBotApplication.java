@@ -1,9 +1,6 @@
 package com.uqac;
 
 import com.uqac.controller.MainWindowController;
-import com.uqac.model.AspiBot;
-import com.uqac.model.Board;
-import com.uqac.model.MyThread;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

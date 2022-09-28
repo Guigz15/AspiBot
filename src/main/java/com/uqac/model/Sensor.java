@@ -31,6 +31,6 @@ public class Sensor {
     }
 
     public void updateBoard(Board board) {
-        this.board = new Board(board);
+        this.board = board;
     }
 }

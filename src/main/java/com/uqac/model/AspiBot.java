@@ -21,4 +21,7 @@ public class AspiBot {
         this.batteryLevel = 0;
     }
 
+    public void updateBoard(Board board) {
+        this.sensor.updateBoard(board);
+    }
 }
