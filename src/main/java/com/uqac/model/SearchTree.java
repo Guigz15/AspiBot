@@ -86,11 +86,11 @@ public class SearchTree
         }
         return false;
     }
-    public List<Tile> getAllNodes() throws InterruptedException {
+    public List<Tile> getAllNodes() {
         List<Tile> nodes = new ArrayList<>();
         return getAllNodes(nodes);
     }
-    private List<Tile> getAllNodes(List<Tile> nodes) throws InterruptedException {
+    private List<Tile> getAllNodes(List<Tile> nodes)  {
         if (isLeaf())
         {
             nodes.add(node);
@@ -106,7 +106,7 @@ public class SearchTree
             return nodes;
         }
     }
-    public Tile hasCommunNode(SearchTree treeToCompare) throws InterruptedException {
+    public Tile hasCommunNode(SearchTree treeToCompare)  {
         List<Tile> nodes = getAllNodes();
         List<Tile> nodesToCompare = treeToCompare.getAllNodes();
         for (Tile node : nodes)
@@ -121,7 +121,7 @@ public class SearchTree
         }
         return null;
     }
-    public List<Tile>getWayTo(Tile element) throws InterruptedException {
+    public List<Tile>getWayTo(Tile element)   {
         System.out.print("element : ");
         element.display();
         System.out.println();
@@ -131,7 +131,7 @@ public class SearchTree
         return getWayTo(element, way, wayIsFind);
     }
 
-    private List<Tile> getWayTo(Tile element, List<Tile> way, List<Boolean> wayIsFind) throws InterruptedException {
+    private List<Tile> getWayTo(Tile element, List<Tile> way, List<Boolean> wayIsFind)  {
         if(node.equals(element))
         {
             System.out.print("ici");

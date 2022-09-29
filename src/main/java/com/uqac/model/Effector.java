@@ -26,7 +26,7 @@ public class Effector {
             intentions.remove(0);
         }
     }
-    private void move(AspiBot aspiBot, Action action) {
+    public void move(AspiBot aspiBot, Action action) {
         this.sensor = aspiBot.getSensor();
         Tile oldTile = sensor.getTile();
         int oldX = oldTile.getXPosition();
@@ -92,22 +92,22 @@ public class Effector {
         this.sensor.updateBoard(board);
     }
 
-    public List<Direction> convertPathToDirections(List<Tile> path) {
-        List<Direction> directionsList = new ArrayList<>();
+    public List<Action> convertPathToActions(List<Tile> path) {
+        List<Action> ActionsList = new ArrayList<>();
         for(Tile tile : path) {
             if(tile.getX() > sensor.getTile().getX()) {
-                directionsList.add(Direction.RIGHT);
+                ActionsList.add(Action.RIGHT);
             }
             else if(tile.getX() < sensor.getTile().getX()) {
-                directionsList.add(Direction.LEFT);
+                ActionsList.add(Action.LEFT);
             }
             else if(tile.getY() > sensor.getTile().getY()) {
-                directionsList.add(Direction.DOWN);
+                ActionsList.add(Action.DOWN);
             }
             else if(tile.getY() < sensor.getTile().getY()) {
-                directionsList.add(Direction.UP);
+                ActionsList.add(Action.UP);
             }
         }
-        return directionsList;
+        return ActionsList;
     }
 }

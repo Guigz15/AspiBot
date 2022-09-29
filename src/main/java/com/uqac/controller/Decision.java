@@ -18,9 +18,9 @@ public class Decision {
         this.sensor = sensor;
     }
 
-    public List<Action> bidirectionnal_search()
+    public List<Action> bidirectionnal_search(AspiBot aspiBot)
     {
-        Tile goal = findFarestDust();
+        Tile goal = sensor.findFarestDust(aspiBot);
         if (goal == null)
         {
             return new ArrayList<>();
@@ -41,14 +41,9 @@ public class Decision {
         boolean wayFinded = false;
         while (!wayFinded)
         {
-            sleep(500);
             //propagation des arbres de recherches goal et start
             propagate(wayStart, alreadySeenStart);
-            System.out.print( "wayStart :");
-            wayStart.display();
             propagate(wayGoal, alreadySeenGoal);
-            System.out.print( "wayGoal :");
-            wayGoal.display();
             //MAJ de la liste forbiddenStart et de l'arbre wayStart
             leafStart.clear();
             leafStart.addAll(wayStart.getLeaf());

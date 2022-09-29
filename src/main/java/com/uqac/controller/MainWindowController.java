@@ -51,15 +51,13 @@ public class MainWindowController implements Initializable {
                         for(Tile tile : path) {
                             System.out.println(tile.getX() + " " + tile.getY());
                         }
-                        List<Effector.Direction> directionsList = aspiBot.getEffector().convertPathToDirections(path);
-                        for(Effector.Direction direction : directionsList) {
+                        List<Action> directionsList = aspiBot.getEffector().convertPathToActions(path);
+                        for(Action direction : directionsList) {
                             Thread.sleep(1000);
                             aspiBot.getEffector().move(aspiBot, direction);
                         }
 
 
-                        /*Random random = new Random();
-                        aspiBot.getEffector().move(aspiBot, Effector.Direction.values()[random.nextInt(Effector.Direction.values().length)]);*/
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -85,7 +83,7 @@ public class MainWindowController implements Initializable {
                 }
             }
         }.start();
-        new Thread() {
+      /*  new Thread() {
             @Override
             public void run() {
                 super.run();
@@ -95,7 +93,7 @@ public class MainWindowController implements Initializable {
                         if (i == 20) {
                             i = 0;
                             aspiBot.getDecision().setSensor(aspiBot.getSensor());
-                            aspiBot.getEffector().setIntentions(aspiBot.getDecision().bidirectionnal_search());
+                            aspiBot.getEffector().setIntentions(aspiBot.getDecision().bidirectionnal_search(aspiBot));
                         }
                         System.out.println(i);
 
@@ -112,6 +110,8 @@ public class MainWindowController implements Initializable {
             }
         }.start();
 
+
+       */
     }
 
 
