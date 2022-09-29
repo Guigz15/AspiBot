@@ -57,8 +57,9 @@ public class Board {
         return tiles.get(x).get(y);
     }
 
-    public List<Tile> getNeighbors(int x, int y) {
-        Tile tile = getTile(x, y);
+    public List<Tile> getNeighbors(Tile tile) {
+        int x = (int) tile.getX();
+        int y = (int) tile.getY();
         List<Tile> neighbors = new ArrayList<>();
         if (x > 0) {
             neighbors.add(getTile(x - 1, y));
@@ -97,5 +98,13 @@ public class Board {
                 this.getTile(i, j).draw();
             }
         }
+    }
+
+    public int distanceBetweenTiles(Tile tile1, Tile tile2) {
+        return (int)(Math.abs(tile1.getX() - tile2.getX()) + Math.abs(tile1.getY() - tile2.getY()));
+    }
+
+    public int calculatePath(List<Tile> tilePath) {
+        return 0;
     }
 }

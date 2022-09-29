@@ -3,9 +3,7 @@ package com.uqac.controller;
 import com.uqac.model.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.ImagePattern;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -36,9 +34,6 @@ public class MainWindowController implements Initializable {
         }
 
         this.aspiBot = new AspiBot(board);
-        Tile startTile = this.board.getTile(aspiBot.getSensor().getXPosition(), aspiBot.getSensor().getYPosition());
-        startTile.setVacuum(true);
-
 
         //Create a new thread to generate dust and gems on the board
         new Thread() {
