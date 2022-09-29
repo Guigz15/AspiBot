@@ -54,9 +54,10 @@ public class MainWindowController implements Initializable {
                         }
                         List<Effector.Direction> directionsList = aspiBot.getEffector().convertPathToDirections(path);
                         for(Effector.Direction direction : directionsList) {
+                            Thread.sleep(1000);
                             aspiBot.getEffector().move(aspiBot, direction);
                         }
-                        Thread.sleep(1000);
+
 
                         /*Random random = new Random();
                         aspiBot.getEffector().move(aspiBot, Effector.Direction.values()[random.nextInt(Effector.Direction.values().length)]);*/

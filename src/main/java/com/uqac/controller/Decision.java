@@ -52,14 +52,14 @@ public class Decision {
             if (current.equals(goal)) {
                 Tile temp = current;
                 path.add(temp);
-                while (temp.getParent() != null) {
+                while (temp.getTileParent() != null) {
                     path.add(temp.getTileParent());
                     temp = temp.getTileParent();
                 }
                 Collections.reverse(path);
                 return path;
             }
-            List<Tile> neighbors = sensor.getBoard().getNeighbors((int)current.getX(), (int)current.getY());
+            List<Tile> neighbors = sensor.getBoard().getNeighbors(current);
             for (Tile neighbor : neighbors) {
                 if (!closedList.contains(neighbor)) {
                     int tempG = current.getG() + 1;
