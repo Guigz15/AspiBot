@@ -6,6 +6,7 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class Effector {
     private Sensor sensor;
     @Getter
@@ -85,5 +86,28 @@ public class Effector {
             sensor.getBoard().getTile(sensor.getXPosition(), sensor.getYPosition()).setGem(false);
             //aspiBot.setBatteryLevel(aspiBot.getBatteryLevel() + 1);
         }
+    }
+
+    public void updateBoard(Board board) {
+        this.sensor.updateBoard(board);
+    }
+
+    public List<Direction> convertPathToDirections(List<Tile> path) {
+        List<Direction> directionsList = new ArrayList<>();
+        for(Tile tile : path) {
+            if(tile.getX() > sensor.getTile().getX()) {
+                directionsList.add(Direction.RIGHT);
+            }
+            else if(tile.getX() < sensor.getTile().getX()) {
+                directionsList.add(Direction.LEFT);
+            }
+            else if(tile.getY() > sensor.getTile().getY()) {
+                directionsList.add(Direction.DOWN);
+            }
+            else if(tile.getY() < sensor.getTile().getY()) {
+                directionsList.add(Direction.UP);
+            }
+        }
+        return directionsList;
     }
 }

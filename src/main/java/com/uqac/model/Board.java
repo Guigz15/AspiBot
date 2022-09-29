@@ -57,7 +57,6 @@ public class Board {
     public Tile getTile(int x, int y) {
         return tiles.get(x).get(y);
     }
-
     public LinkedHashSet<Tile> getNeighbors(List<Tile> tiles)
     {
         LinkedHashSet<Tile> neighbors = new LinkedHashSet<>();
@@ -71,10 +70,10 @@ public class Board {
         return neighbors;
     }
 
-    public LinkedHashSet<Tile> getNeighbors(Tile tile) {
-        int x = tile.getXPosition();
-        int y = tile.getYPosition();
-        LinkedHashSet<Tile> neighbors = new LinkedHashSet<>();
+    public List<Tile> getNeighbors(Tile tile) {
+        int x = (int) tile.getX();
+        int y = (int) tile.getY();
+        List<Tile> neighbors = new ArrayList<>();
         if (x > 0) {
             neighbors.add(getTile(x - 1, y));
         }

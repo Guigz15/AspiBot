@@ -8,17 +8,18 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.lang.Thread.sleep;
+import java.util.*;
 
-public class Decision
-{
-    @Getter
-    @Setter
+public class Decision {
+    @Getter @Setter
     private Sensor sensor;
-    public Decision(Sensor sensorArg)
-    {
-        sensor = new Sensor(sensorArg);
+
+    public Decision(Sensor sensor) {
+        this.sensor = sensor;
     }
-    public List<Action> bidirectionnal_search() throws InterruptedException {
+
+    public List<Action> bidirectionnal_search()
+    {
         Tile goal = findFarestDust();
         if (goal == null)
         {
@@ -181,26 +182,52 @@ public class Decision
     }
 
 
-    public Tile findFarestDust() {
-        int x = sensor.getXPosition();
-        int y = sensor.getYPosition();
-        //Tile tile = sensor.getBoard().getTile(x, y);
-        Tile tile = null;
-        int distance = 0;
-        for (int i = 0; i < sensor.getBoard().getHeight(); i++) {
-            for (int j = 0; j < sensor.getBoard().getWidth(); j++) {
-                if (sensor.getBoard().getTile(i, j).isDust()) {
-                    int newDistance = Math.abs(x - i) + Math.abs(y - j);
-                    if (distance < newDistance) {
-                        distance = newDistance;
-                        tile = sensor.getBoard().getTiles().get(i).get(j);
 
+    public List<Tile> aStar(AspiBot aspiBot) {
+        sensor = aspiBot.getSensor();
+        Tile goal = sensor.findFarestDust(aspiBot);
+        System.out.println("Goal : " + goal.getX() + " " + goal.getY());
+        List<Tile> openList = new ArrayList<>();
+        List<Tile> closedList = new ArrayList<>();
+        List<Tile> path = new ArrayList<>();
+        openList.add(sensor.getTile());
+        while (!openList.isEmpty()) {
+            Tile current = openList.get(0);
+            for (Tile tile : openList) {
+                if (tile.getF() < current.getF()) {
+                    current = tile;
+                }
+            }
+            openList.remove(current);
+            closedList.add(current);
+            if (current.equals(goal)) {
+                Tile temp = current;
+                path.add(temp);
+                while (temp.getTileParent() != null) {
+                    path.add(temp.getTileParent());
+                    temp = temp.getTileParent();
+                }
+                Collections.reverse(path);
+                return path;
+            }
+            List<Tile> neighbors = sensor.getBoard().getNeighbors(current);
+            for (Tile neighbor : neighbors) {
+                if (!closedList.contains(neighbor)) {
+                    int tempG = current.getG() + 1;
+                    if (openList.contains(neighbor)) {
+                        if (tempG < neighbor.getG()) {
+                            neighbor.setG(tempG);
+                        }
+                    } else {
+                        neighbor.setG(tempG);
+                        openList.add(neighbor);
                     }
+                    neighbor.setH(Math.abs((int)neighbor.getX() - (int)goal.getX()) + Math.abs((int)neighbor.getY() - (int)goal.getY()));
+                    neighbor.setF(neighbor.getG() + neighbor.getH());
+                    neighbor.setTileParent(current);
                 }
             }
         }
-        return tile;
+        return null;
     }
 }
-
-
