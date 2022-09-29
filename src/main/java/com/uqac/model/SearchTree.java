@@ -4,7 +4,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+
+import static java.lang.Thread.sleep;
 
 public class SearchTree
 {
@@ -31,7 +34,7 @@ public class SearchTree
     }
     public boolean isLeaf()
     {
-        if (sonTrees.size()==0)
+        if (sonTrees == null || sonTrees.size()==0)
         {
             return true;
         }
@@ -57,7 +60,7 @@ public class SearchTree
              son.getLeaf(leafs);
             }
         }
-        return null;
+        return leafs;
     }
     public boolean contains(Tile element)
     {
@@ -83,17 +86,11 @@ public class SearchTree
         }
         return false;
     }
-    public List<Tile> getAllNodes()
-    {
+    public List<Tile> getAllNodes() throws InterruptedException {
         List<Tile> nodes = new ArrayList<>();
         return getAllNodes(nodes);
     }
-    private List<Tile> getAllNodes(List<Tile> nodes)
-    {
-        if (nodes == null)
-        {
-            nodes = new ArrayList<>();
-        }
+    private List<Tile> getAllNodes(List<Tile> nodes) throws InterruptedException {
         if (isLeaf())
         {
             nodes.add(node);
@@ -102,14 +99,16 @@ public class SearchTree
         else
         {
             nodes.add(node);
-            getAllNodes(nodes);
+            for (SearchTree son : sonTrees)
+            {
+                son.getAllNodes(nodes);
+            }
             return nodes;
         }
     }
-    public Tile hasCommunNode(SearchTree treeToCompare)
-    {
-        List<Tile> nodes = getAllNodes(null);
-        List<Tile> nodesToCompare = treeToCompare.getAllNodes(null);
+    public Tile hasCommunNode(SearchTree treeToCompare) throws InterruptedException {
+        List<Tile> nodes = getAllNodes();
+        List<Tile> nodesToCompare = treeToCompare.getAllNodes();
         for (Tile node : nodes)
         {
             for (Tile nodeToCompare : nodesToCompare)
@@ -122,31 +121,79 @@ public class SearchTree
         }
         return null;
     }
-    public List<Tile>getWayTo(Tile element)
-    {
+    public List<Tile>getWayTo(Tile element) throws InterruptedException {
+        System.out.print("element : ");
+        element.display();
+        System.out.println();
         List<Tile> way = new ArrayList<>();
-        return getWayTo(element, way, false);
+        List<Boolean> wayIsFind = new ArrayList<>();
+        wayIsFind.add(false);
+        return getWayTo(element, way, wayIsFind);
     }
 
-    private List<Tile>getWayTo(Tile element, List<Tile> way, boolean wayIsFind)
-    {
-        if (way == null)
+    private List<Tile> getWayTo(Tile element, List<Tile> way, List<Boolean> wayIsFind) throws InterruptedException {
+        if(node.equals(element))
         {
-            way = new ArrayList<>();
-        }
-        if(wayIsFind || node.equals(element))
-        {
-            wayIsFind = true;
+            System.out.print("ici");
+            node.display();
             way.add(node);
+            wayIsFind.set(0, true);
+            return way;
+        }
+        if (contains(element))
+        {
+            System.out.print("là");
+            node.display();
+            for (SearchTree sonTree : sonTrees)
+            {
+                sonTree.node.display();
+            }
+            way.add(node);
+            for (SearchTree sonTree : sonTrees)
+            {
+                if (!wayIsFind.get(0) && sonTree.contains(element))
+                {
+                    System.out.println(wayIsFind.get(0));
+                    sonTree.getWayTo(element, way, wayIsFind);
+                }
+            }
+        }
+        return way;
+        /*sleep(500);
+        System.out.print("way :");
+        if(wayIsFind.get(0) || node.equals(element))
+        {
+            wayIsFind.remove(0);
+            wayIsFind.add(true);
+            way.add(node);
+            way.stream().forEach(tile-> tile.display());
+            System.out.println();
             return way;
         }
         else if (!isLeaf())
         {
-            return getWayTo(element, way, wayIsFind );
+            way.stream().forEach(tile-> tile.display());
+            System.out.println();
+            for (SearchTree sonTree : sonTrees)
+            {
+                LinkedHashSet<Tile> truc = new LinkedHashSet<>();
+                truc.addAll(sonTree.getWayTo(element,way,wayIsFind));
+                if (wayIsFind.get(0))
+                {
+                    way.add(node);
+
+                };
+                return getWayTo(element, way, wayIsFind);
+            }
         }
-        else
-        {
-            return way;
-        }
+        return way;
+
+         */
+    }
+    public void display() throws InterruptedException
+    {
+        List<Tile>tiles = getAllNodes();
+        tiles.stream().forEach(tile-> tile.display());
+        System.out.println();
     }
 }

@@ -11,7 +11,6 @@ import java.net.URL;
 import java.util.Random;
 import java.util.ResourceBundle;
 
-
 public class MainWindowController implements Initializable {
     @FXML @Getter
     private GridPane gridPane;
@@ -49,12 +48,25 @@ public class MainWindowController implements Initializable {
             @Override
             public void run() {
                 super.run();
+                int i = 10;
                 while(!exit) {
                     try {
+                        if (i==20)
+                        {
+                            i=0;
+                            aspiBot.getDecision().setSensor(aspiBot.getSensor());
+                            aspiBot.getEffector().setIntentions(aspiBot.getDecision().bidirectionnal_search());
+                        }
+                        System.out.println(i);
+
                         Thread.sleep(1000);
-                        Random random = new Random();
-                        aspiBot.getEffector().move(aspiBot, Effector.Direction.values()[random.nextInt(Effector.Direction.values().length)]);
-                    } catch (InterruptedException e) {
+
+                        aspiBot.getEffector().move(aspiBot);
+                        System.out.println("position :");
+                        aspiBot.getSensor().getTile().display();
+                        i++;
+                    } catch (InterruptedException e)
+                    {
                         e.printStackTrace();
                     }
                 }

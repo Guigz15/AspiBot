@@ -79,4 +79,8 @@ public class Tile extends Rectangle {
             setFill(null);
         }
     }
+    public void display()
+    {
+        System.out.print("(" +getXPosition() + ";"+getYPosition()+"); ");
+    }
 }

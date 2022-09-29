@@ -1,5 +1,6 @@
 package com.uqac.model;
 
+import com.uqac.controller.Decision;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,6 +12,8 @@ public class AspiBot {
     @Getter @Setter
     private Effector effector;
     @Getter @Setter
+    private Decision decision;
+    @Getter @Setter
     private int batteryLevel;
 
     public AspiBot(Board board) {
@@ -19,6 +22,7 @@ public class AspiBot {
         startTile.setVacuum(true);
         startTile.draw();
         this.sensor = new Sensor(board, startTile);
+        this.decision =new Decision(sensor);
         this.effector = new Effector(this.sensor);
         this.batteryLevel = 0;
     }
