@@ -57,8 +57,9 @@ public class Board {
         return tiles.get(x).get(y);
     }
 
-    public List<Tile> getNeighbors(int x, int y) {
-        Tile tile = getTile(x, y);
+    public List<Tile> getNeighbors(Tile tile) {
+        int x = (int) tile.getX();
+        int y = (int) tile.getY();
         List<Tile> neighbors = new ArrayList<>();
         if (x > 0) {
             neighbors.add(getTile(x - 1, y));
