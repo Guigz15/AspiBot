@@ -98,18 +98,39 @@ public class Board {
         }
         return allTiles;
     }
-
-    public void generateItems() {
-        for(int i = 0; i < 5; i++) {
-            for(int j = 0; j < 5; j++) {
-                if(new Random().nextDouble() < 0.1) {
-                    this.getTile(i, j).setDust(true);
+    /**
+     * This function is used to generate new items (dust and gem) on the board
+     */
+    public int generateItems() {
+        int penalty = 0;
+        try {
+            Random r = new Random();
+            //The time between the items generation is not definitive, I think we have to discuss it. Now the max time is 10 seconds.
+            int time =  r.nextInt(11);
+            Thread.sleep(time * 1000);
+            for(int i = 0; i < 5; i++) {
+                for(int j = 0; j < 5; j++) {
+                    if(new Random().nextDouble() < 0.1) {
+                        if(!this.getTile(i, j).isDust())
+                        {
+                            penalty += 4;
+                            this.getTile(i, j).setDust(true);
+                        }
+                    }
+                    if(new Random().nextDouble() < 0.05){
+                        if(!this.getTile(i,j).isGem())
+                        {
+                            this.getTile(i, j).setGem(true);
+                        }
+                    }
+                    this.getTile(i, j).draw();
                 }
-                if(new Random().nextDouble() < 0.05){
-                    this.getTile(i, j).setGem(true);
-                }
-                this.getTile(i, j).draw();
             }
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
+        return penalty;
     }
 }

@@ -9,18 +9,41 @@ import java.util.stream.Collectors;
 public class Decision {
     @Getter @Setter
     private Sensor sensor;
-
+    @Getter @Setter
+    private int evaluation;
     public Decision(Sensor sensor) {
         this.sensor = sensor;
+        this.evaluation=100;
     }
 
-    public List<Action> bidirectionnal_search(AspiBot aspiBot)
+    public List<Action> chooseAlgorithm (AspiBot aspiBot)
     {
         Tile goal = sensor.findFarestDust(aspiBot);
         if (goal == null)
         {
+            sensor.setClean(true);
             return new ArrayList<>();
         }
+        HashMap<Integer,List<Action>> actions = new HashMap<>();
+        HashMap<Integer,List<Action>> temp = bidirectionnal_search(aspiBot, goal);
+        int bidirectionalKey = temp.keySet().iterator().next();
+        actions.put(bidirectionalKey, temp.get(bidirectionalKey));
+        System.out.println("1er algo : "+ bidirectionalKey +"  "+ temp.get(bidirectionalKey));
+        temp = aStar(aspiBot,goal);
+        int aStarKey = temp.keySet().iterator().next();
+        actions.put(aStarKey, temp.get(aStarKey));
+        System.out.println("2eme algo : "+ bidirectionalKey +"  "+ temp.get(bidirectionalKey));
+
+        if(aStarKey >= bidirectionalKey)
+        {
+            return actions.get(aStarKey);
+        }
+        return actions.get(bidirectionalKey);
+
+    }
+    public HashMap<Integer,List<Action>> bidirectionnal_search(AspiBot aspiBot, Tile goal)
+    {
+
         Tile communTile = null;
         LinkedHashSet<Tile> alreadySeenStart = new LinkedHashSet<>();
         LinkedHashSet<Tile> alreadySeenGoal = new LinkedHashSet<>();
@@ -84,10 +107,8 @@ public class Decision {
         firstPart.addAll(secondPart);
         //System.out.println("le chemin :");
         firstPart.forEach(Tile::display);
-        List<Action> intentions = new ArrayList<>();
-        intentions.addAll(getInstruction(firstPart));
         //intentions.forEach(intention->System.out.println(intention.toString()));
-        return intentions;
+        return convertPathToActions(firstPart);
     }
 
     public void propagate(SearchTree tree, LinkedHashSet<Tile> forbiddenTiles)
@@ -101,75 +122,20 @@ public class Decision {
         });
     }
 
-    public List<Action> getInstruction(List<Tile> way)
-    {
-        List<Action> actions = new ArrayList<>();
-        Tile currentTile;
-        Tile nextTile = null;
-        int xMove;
-        int yMove;
-        if(way.size() == 0)
-        {
-            return actions;
-        }
-        for (int i =0; i< way.size()-1; ++i)
-        {
-            currentTile = way.get(i);
-            nextTile = way.get(i+1);
-            xMove = nextTile.getXPosition() - currentTile.getXPosition();
-            yMove = nextTile.getYPosition() - currentTile.getYPosition();
-            if (currentTile.isDust() && currentTile.isGem())
-            {
-                actions.add(Action.PICK_UP);
-                actions.add(Action.VACUUMIZE);
-            }
-            else if (currentTile.isDust())
-            {
-                actions.add(Action.VACUUMIZE);
-            }
-            else if(currentTile.isGem())
-            {
-                actions.add(Action.PICK_UP);
-            }
-            if (xMove == 1 && yMove == 0)
-            {
-                actions.add(Action.RIGHT);
-            }
-            else if (xMove == -1 && yMove == 0)
-            {
-                actions.add(Action.LEFT);
-            }
-            else if (xMove == 0 && yMove == 1)
-            {
-                actions.add(Action.DOWN);
-            }
-            else if (xMove == 0 && yMove == -1)
-            {
-                actions.add(Action.UP);
-            }
-        }
-
-        if (nextTile.isGem())
-        {
-            actions.add(Action.PICK_UP);
-        }
-        actions.add(Action.VACUUMIZE);
-        //System.out.print("Actions : ");
-        //actions.forEach(action -> System.out.print(action.toString() + " "));
-        return actions;
-    }
-
-    public List<Action> convertPathToActions(List<Tile> path) {
+    public HashMap<Integer,List<Action>> convertPathToActions(List<Tile> path) {
         List<Action> actionsList = new ArrayList<>();
+        int bonus =0;
         for(int i = 0; i < path.size() - 1; i++) {
             if(path.get(i).isGem()) {
                 actionsList.add(Action.PICK_UP);
             }
             if(path.get(i).isDust()) {
                 actionsList.add(Action.VACUUMIZE);
+                bonus += 4;
             }
             if(path.get(i).getX() < path.get(i + 1).getX()) {
                 actionsList.add(Action.RIGHT);
+
             }
             else if(path.get(i).getX() > path.get(i + 1).getX()) {
                 actionsList.add(Action.LEFT);
@@ -180,13 +146,16 @@ public class Decision {
             else if(path.get(i).getY() > path.get(i + 1).getY()) {
                 actionsList.add(Action.UP);
             }
+            bonus -= 1;
         }
-        return actionsList;
+
+        HashMap<Integer,List<Action>> mapAction = new HashMap<>();
+        mapAction.put(bonus, actionsList);
+        return mapAction;
     }
 
-    public List<Tile> aStar(AspiBot aspiBot) {
+    public HashMap<Integer,List<Action>> aStar(AspiBot aspiBot,Tile goal) {
         sensor = aspiBot.getSensor();
-        Tile goal = sensor.findFarestDust(aspiBot);
         List<Node> openList = new ArrayList<>();
         List<Node> closedList = new ArrayList<>();
         List<Tile> path = new ArrayList<>();
@@ -209,7 +178,7 @@ public class Decision {
                     temp = temp.getNodeParent();
                 }
                 Collections.reverse(path);
-                return path;
+                return convertPathToActions(path);
             }
             List<Tile> neighbors = sensor.getBoard().getNeighbors(current.getTile());
             for (Tile tile : neighbors) {

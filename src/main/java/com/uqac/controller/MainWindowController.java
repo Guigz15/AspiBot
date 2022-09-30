@@ -36,8 +36,33 @@ public class MainWindowController implements Initializable {
 
         this.aspiBot = new AspiBot(board);
 
-        //Create a new thread to generate dust and gems on the board
-        new Thread() {
+        new Thread()
+        {
+            public void run()
+            {
+                int evaluation =0;
+                super.run();
+                while (!exit)
+                {
+                    try
+                    {
+                        if(aspiBot.getEffector().getIntentions().isEmpty())
+                        {
+                            evaluation = aspiBot.getDecision().getEvaluation();
+                            aspiBot.getEffector().setIntentions(aspiBot.getDecision().chooseAlgorithm(aspiBot));
+                            //aspiBot.getEffector().getIntentions().forEach(action->System.out.print(action.toString()));
+                        }
+                        Thread.sleep(1000);
+
+                        aspiBot.getDecision().setEvaluation(evaluation + aspiBot.getEffector().move(aspiBot));
+                        System.out.println("Evaluation : " + aspiBot.getDecision().getEvaluation());
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        }.start();
+        /*new Thread() {
             @Override
             public void run() {
                 super.run();
@@ -64,6 +89,8 @@ public class MainWindowController implements Initializable {
             }
         }.start();
 
+
+         */
         //Create a new thread to generate dust and gems on the board
         new Thread() {
             @Override
@@ -78,7 +105,7 @@ public class MainWindowController implements Initializable {
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }
-                    generateItems(board);
+                    aspiBot.getDecision().setEvaluation(aspiBot.getDecision().getEvaluation()- board.generateItems());
                 }
             }
         }.start();
@@ -87,48 +114,26 @@ public class MainWindowController implements Initializable {
             @Override
             public void run() {
                 super.run();
-                int i = 10;
-                while (!exit) {
+                while (!exit)
+                {
                     try {
-                        if (i == 20) {
-                            i = 0;
+                        if (aspiBot.getEffector().getIntentions().isEmpty()) {
                             aspiBot.getDecision().setSensor(aspiBot.getSensor());
                             aspiBot.getEffector().setIntentions(aspiBot.getDecision().bidirectionnal_search(aspiBot));
                         }
-                        System.out.println(i);
 
-                        Thread.sleep(1000);
 
-                        aspiBot.getEffector().move(aspiBot);
                         System.out.println("position :");
                         aspiBot.getSensor().getTile().display();
-                        i++;
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
             }
-        }.start();*/
+        }.start();
+       */
     }
 
-
-    /**
-     * This function is used to generate new items (dust and gem) on the board
-     * @param board where items are generated
-     */
-    private void generateItems(Board board) {
-        try {
-            Random r = new Random();
-            //The time between the items generation is not definitive, I think we have to discuss it. Now the max time is 10 seconds.
-            int time =  r.nextInt(11);
-            Thread.sleep(time * 1000);
-            board.generateItems();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
-    }
 
     /**
      * This function stops all threads

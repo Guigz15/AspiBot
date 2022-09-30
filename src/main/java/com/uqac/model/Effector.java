@@ -18,16 +18,19 @@ public class Effector {
         intentions = new ArrayList<>();
     }
 
-    public void move(AspiBot aspiBot)
+    public int move(AspiBot aspiBot)
     {
+        int bonus = 0;
         if (intentions.size()!=0)
         {
-            move(aspiBot, intentions.get(0));
+            bonus= move(aspiBot, intentions.get(0));
             intentions.remove(0);
         }
+        return bonus;
     }
 
-    public void move(AspiBot aspiBot, Action action) {
+    private int move(AspiBot aspiBot, Action action) {
+        int bonus =0;
         this.sensor = aspiBot.getSensor();
         Tile oldTile = sensor.getTile();
         int oldX = oldTile.getXPosition();
@@ -57,17 +60,27 @@ public class Effector {
             sensor.setTile(sensor.getBoard().getTile(oldX + 1, oldY));
             sensor.getTile().setVacuum(true);
         }
-
-        if (action == Action.PICK_UP)
+        else if (action == Action.PICK_UP)
         {
             oldTile.setGem(false);
         }
         else if (action == Action.VACUUMIZE)
         {
-            oldTile.setDust(false);
-            oldTile.setGem(false);
+            if(oldTile.isGem())
+            {
+                bonus-=5;
+                oldTile.setGem(false);
+
+            }
+            if (oldTile.isDust())
+            {
+                bonus +=4;
+                oldTile.setDust(false);
+            }
         }
+        bonus -= 1;
 
         sensor.getTile().draw();
+        return bonus;
     }
 }

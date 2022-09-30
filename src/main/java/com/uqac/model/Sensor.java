@@ -7,11 +7,14 @@ public class Sensor {
     @Getter @Setter
     private Tile tile;
     @Getter @Setter
+    private boolean clean;
+    @Getter @Setter
     private Board board;
 
     public Sensor(Board board, Tile tile) {
         this.board = board;
         this.tile = tile;
+        this.clean = true;
     }
 
     public int getXPosition()
@@ -26,9 +29,9 @@ public class Sensor {
 
     public Tile findFarestDust(AspiBot aspiBot) {
         Sensor sensor = aspiBot.getSensor();
-        int x = (int)sensor.getTile().getX();
-        int y = (int)sensor.getTile().getY();
-        Tile tile = sensor.getTile();
+        int x = sensor.getTile().getXPosition();
+        int y = sensor.getTile().getYPosition();
+        Tile tile = null;
         int distance = 0;
         for (int i = 0; i < sensor.getBoard().getHeight(); i++) {
             for (int j = 0; j < sensor.getBoard().getWidth(); j++) {
