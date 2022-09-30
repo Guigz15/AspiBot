@@ -27,10 +27,10 @@ public class Decision {
         LinkedHashSet<SearchTree> leafStart = new LinkedHashSet<>();
         LinkedHashSet<SearchTree> leafGoal = new LinkedHashSet<>();
         SearchTree wayStart = new SearchTree(sensor.getTile());
-        System.out.println("Tile depart :");
+        //System.out.println("Tile depart :");
         sensor.getTile().display();
         SearchTree wayGoal = new SearchTree(goal);
-        System.out.println("Tile arrivée :");
+        //System.out.println("Tile arrivée :");
         goal.display();
         alreadySeenStart.add(sensor.getTile());
         alreadySeenGoal.add(goal);
@@ -54,9 +54,9 @@ public class Decision {
             {
                 alreadySeenGoal.add(leaf.getNode());
             }
-            System.out.print("alreadySeenStart :");
+            //System.out.print("alreadySeenStart :");
             alreadySeenStart.forEach(Tile::display);
-            System.out.print("alreadySeenGoal :");
+            //System.out.print("alreadySeenGoal :");
             alreadySeenGoal.forEach(Tile::display);
             communTile = wayStart.hasCommunNode(wayGoal);
             if (communTile != null)
@@ -64,31 +64,29 @@ public class Decision {
                 wayFinded = true;
             }
         }
-        System.out.print("communTile :");
+        //System.out.print("communTile :");
         communTile.display();
         //trouver le noeud commun aux arbre et relier les chemins
         List<Tile> firstPart = wayStart.getWayTo(communTile);
-        System.out.print("firstPart :");
+        //System.out.print("firstPart :");
         if (firstPart != null)
         {
             firstPart.forEach(Tile::display);
-            System.out.println();
         }
         List<Tile> secondPart = wayGoal.getWayTo(communTile);
-        System.out.print("secondPart :");
+        //System.out.print("secondPart :");
         if (secondPart != null)
         {
             secondPart.forEach(Tile::display);
-            System.out.println();
         }
         Collections.reverse(secondPart);
         secondPart.remove(0);
         firstPart.addAll(secondPart);
-        System.out.println("le chemin :");
+        //System.out.println("le chemin :");
         firstPart.forEach(Tile::display);
         List<Action> intentions = new ArrayList<>();
         intentions.addAll(getInstruction(firstPart));
-        intentions.forEach(intention->System.out.println(intention.toString()));
+        //intentions.forEach(intention->System.out.println(intention.toString()));
         return intentions;
     }
 
@@ -156,8 +154,8 @@ public class Decision {
             actions.add(Action.PICK_UP);
         }
         actions.add(Action.VACUUMIZE);
-        System.out.print("Actions : ");
-        actions.forEach(action -> System.out.print(action.toString() + " "));
+        //System.out.print("Actions : ");
+        //actions.forEach(action -> System.out.print(action.toString() + " "));
         return actions;
     }
 
@@ -189,8 +187,6 @@ public class Decision {
     public List<Tile> aStar(AspiBot aspiBot) {
         sensor = aspiBot.getSensor();
         Tile goal = sensor.findFarestDust(aspiBot);
-        System.out.println("Start : " + sensor.getTile().getX() + " " + sensor.getTile().getY());
-        System.out.println("Goal : " + goal.getX() + " " + goal.getY());
         List<Node> openList = new ArrayList<>();
         List<Node> closedList = new ArrayList<>();
         List<Tile> path = new ArrayList<>();
@@ -219,13 +215,13 @@ public class Decision {
                 Node neighbor = new Node(tile);
                 if (!closedList.contains(neighbor)) {
                     int tempG = current.getG() + 1;
-                    if (openList.contains(neighbor)) {
-                        if (current.getTile().isGem())
-                            tempG -= 1;
-                        if (current.getTile().isDust())
-                            tempG -= 2;
-                    } else
+                    if (current.getTile().isGem())
+                        tempG -= 1;
+                    if (current.getTile().isDust())
+                        tempG -= 2;
+                    if (!openList.contains(neighbor)) {
                         openList.add(neighbor);
+                    }
 
                     neighbor.setG(tempG);
                     neighbor.setH(Math.abs((int)neighbor.getTile().getX() - (int)goal.getX()) + Math.abs((int)neighbor.getTile().getY() - (int)goal.getY()));

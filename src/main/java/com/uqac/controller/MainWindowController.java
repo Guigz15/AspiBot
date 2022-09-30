@@ -48,9 +48,7 @@ public class MainWindowController implements Initializable {
                         if(aspiBot.getSensor().findFarestDust(aspiBot) != aspiBot.getSensor().getTile()) {
                             path = decision.aStar(aspiBot);
                         }
-                        for(Tile tile : path) {
-                            System.out.println(tile.getX() + " " + tile.getY());
-                        }
+
                         List<Action> directionsList = decision.convertPathToActions(path);
                         for(Action direction : directionsList) {
                             Thread.sleep(1000);
