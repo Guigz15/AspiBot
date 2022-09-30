@@ -192,6 +192,7 @@ public class Decision {
         List<Tile> path = new ArrayList<>();
         openList.add(new Node(sensor.getTile()));
         while (!openList.isEmpty()) {
+            openList.sort(Comparator.comparing(Node::getF));
             Node current = openList.get(0);
             for (Node node : openList) {
                 if (node.getF() < current.getF()) {
@@ -233,7 +234,7 @@ public class Decision {
         return null;
     }
 
-    public class Node {
+    private class Node {
 
         @Getter @Setter
         private int f;

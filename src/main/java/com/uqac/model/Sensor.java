@@ -1,7 +1,5 @@
 package com.uqac.model;
 
-import javafx.scene.image.Image;
-import javafx.scene.paint.ImagePattern;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,10 +14,6 @@ public class Sensor {
         this.tile = tile;
     }
 
-    public Sensor(Sensor sensor) {
-        this.board = sensor.getBoard();
-        this.tile = sensor.getTile();
-    }
     public int getXPosition()
     {
         return tile.getXPosition();
@@ -28,10 +22,6 @@ public class Sensor {
     public int getYPosition()
     {
         return tile.getYPosition();
-    }
-
-    public void updateBoard(Board board) {
-        this.board = board;
     }
 
     public Tile findFarestDust(AspiBot aspiBot) {

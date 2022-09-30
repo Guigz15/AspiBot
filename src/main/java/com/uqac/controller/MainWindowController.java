@@ -51,9 +51,9 @@ public class MainWindowController implements Initializable {
 
                         List<Action> directionsList = decision.convertPathToActions(path);
                         for(Action direction : directionsList) {
-                            Thread.sleep(1000);
+                            Thread.sleep(500);
                             aspiBot.getEffector().move(aspiBot, direction);
-                            System.out.println(direction.toString());
+                            //System.out.println(direction.toString());
                         }
 
 
