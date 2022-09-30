@@ -2,20 +2,14 @@ package com.uqac.model;
 
 import lombok.Getter;
 import lombok.Setter;
-
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
-
-import static java.lang.Thread.sleep;
 
 public class SearchTree
 {
-    @Getter
-    @Setter
+    @Getter @Setter
     private Tile node;
-    @Getter
-    @Setter
+    @Getter @Setter
     private List<SearchTree> sonTrees;
 
     public SearchTree(Tile tileArg)
@@ -28,18 +22,17 @@ public class SearchTree
     {
         sonTrees.add(new SearchTree(sonTile));
     }
+
     public void addSons(List<Tile> sonTiles)
     {
         sonTiles.forEach(sonTile -> sonTrees.add(new SearchTree(sonTile)));
     }
+
     public boolean isLeaf()
     {
-        if (sonTrees == null || sonTrees.size()==0)
-        {
-            return true;
-        }
-        return false;
+        return sonTrees == null || sonTrees.size() == 0;
     }
+
     public List<SearchTree> getLeaf()
     {
         List<SearchTree> leafs = new ArrayList<>();
@@ -62,10 +55,12 @@ public class SearchTree
         }
         return leafs;
     }
+
     public boolean contains(Tile element)
     {
         return contains(element, false);
     }
+
     private boolean contains(Tile element, boolean isHere)
     {
         if (isLeaf() && !node.equals(element))
@@ -86,10 +81,12 @@ public class SearchTree
         }
         return false;
     }
+
     public List<Tile> getAllNodes() {
         List<Tile> nodes = new ArrayList<>();
         return getAllNodes(nodes);
     }
+
     private List<Tile> getAllNodes(List<Tile> nodes)  {
         if (isLeaf())
         {
@@ -106,6 +103,7 @@ public class SearchTree
             return nodes;
         }
     }
+
     public Tile hasCommunNode(SearchTree treeToCompare)  {
         List<Tile> nodes = getAllNodes();
         List<Tile> nodesToCompare = treeToCompare.getAllNodes();
@@ -121,6 +119,7 @@ public class SearchTree
         }
         return null;
     }
+
     public List<Tile>getWayTo(Tile element)   {
         System.out.print("element : ");
         element.display();
@@ -159,41 +158,11 @@ public class SearchTree
             }
         }
         return way;
-        /*sleep(500);
-        System.out.print("way :");
-        if(wayIsFind.get(0) || node.equals(element))
-        {
-            wayIsFind.remove(0);
-            wayIsFind.add(true);
-            way.add(node);
-            way.stream().forEach(tile-> tile.display());
-            System.out.println();
-            return way;
-        }
-        else if (!isLeaf())
-        {
-            way.stream().forEach(tile-> tile.display());
-            System.out.println();
-            for (SearchTree sonTree : sonTrees)
-            {
-                LinkedHashSet<Tile> truc = new LinkedHashSet<>();
-                truc.addAll(sonTree.getWayTo(element,way,wayIsFind));
-                if (wayIsFind.get(0))
-                {
-                    way.add(node);
-
-                };
-                return getWayTo(element, way, wayIsFind);
-            }
-        }
-        return way;
-
-         */
     }
-    public void display() throws InterruptedException
-    {
+
+    public void display() {
         List<Tile>tiles = getAllNodes();
-        tiles.stream().forEach(tile-> tile.display());
+        tiles.forEach(Tile::display);
         System.out.println();
     }
 }

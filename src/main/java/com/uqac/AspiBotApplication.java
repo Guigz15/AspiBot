@@ -2,6 +2,7 @@ package com.uqac;
 
 import com.uqac.controller.MainWindowController;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -30,6 +31,13 @@ public class AspiBotApplication extends Application {
         stage.setScene(scene);
         stage.show();
 
-        stage.setOnCloseRequest(windowEvent -> mainWindowController.stop());
+        stage.setOnCloseRequest(windowEvent -> {
+            mainWindowController.stop();
+
+            // Kill GUI Thread
+            Platform.exit();
+            // Kill the JVM
+            System.exit(0);
+        });
     }
 }

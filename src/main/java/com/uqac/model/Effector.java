@@ -17,7 +17,7 @@ public class Effector {
         this.sensor = sensor;
         intentions = new ArrayList<>();
     }
-/*
+
     public void move(AspiBot aspiBot)
     {
         if (intentions.size()!=0)
@@ -25,12 +25,14 @@ public class Effector {
             move(aspiBot, intentions.get(0));
             intentions.remove(0);
         }
-    }*/
+    }
+
     public void move(AspiBot aspiBot, Action action) {
         this.sensor = aspiBot.getSensor();
         Tile oldTile = sensor.getTile();
         int oldX = oldTile.getXPosition();
         int oldY = oldTile.getYPosition();
+
         if(action == Action.UP && sensor.getYPosition() > 0) {
             oldTile.setVacuum(false);
             oldTile.draw();
@@ -55,7 +57,8 @@ public class Effector {
             sensor.setTile(sensor.getBoard().getTile(oldX + 1, oldY));
             sensor.getTile().setVacuum(true);
         }
-        else if (action == Action.PICK_UP)
+
+        if (action == Action.PICK_UP)
         {
             oldTile.setGem(false);
         }
@@ -64,56 +67,7 @@ public class Effector {
             oldTile.setDust(false);
             oldTile.setGem(false);
         }
-        //sensor.getTile().display();
+
         sensor.getTile().draw();
-    }
-
-    public void vacuumize(AspiBot aspiBot) {
-        Sensor sensor = aspiBot.getSensor();
-        if (sensor.getBoard().getTile(sensor.getXPosition(), sensor.getYPosition()).isDust()) {
-            sensor.getBoard().getTile(sensor.getXPosition(), sensor.getYPosition()).setDust(false);
-            //aspiBot.setBatteryLevel(aspiBot.getBatteryLevel() + 1);
-        }
-        if (sensor.getBoard().getTile(sensor.getXPosition(), sensor.getYPosition()).isGem()) {
-            sensor.getBoard().getTile(sensor.getXPosition(), sensor.getYPosition()).setGem(false);
-            //aspiBot.setBatteryLevel(aspiBot.getBatteryLevel() + 1);
-        }
-    }
-
-    public void pickUpGem(AspiBot aspiBot) {
-        Sensor sensor = aspiBot.getSensor();
-        if (sensor.getBoard().getTile(sensor.getXPosition(), sensor.getYPosition()).isGem()) {
-            sensor.getBoard().getTile(sensor.getXPosition(), sensor.getYPosition()).setGem(false);
-            //aspiBot.setBatteryLevel(aspiBot.getBatteryLevel() + 1);
-        }
-    }
-
-    public void updateBoard(Board board) {
-        this.sensor.updateBoard(board);
-    }
-
-    public List<Action> convertPathToActions(List<Tile> path) {
-        List<Action> actionsList = new ArrayList<>();
-        for(int i = 0; i < path.size() - 1; i++) {
-            if(path.get(i).isDust()) {
-                actionsList.add(Action.VACUUMIZE);
-            }
-            if(path.get(i).isGem()) {
-                actionsList.add(Action.PICK_UP);
-            }
-            if(path.get(i).getX() < path.get(i + 1).getX()) {
-                actionsList.add(Action.RIGHT);
-            }
-            else if(path.get(i).getX() > path.get(i + 1).getX()) {
-                actionsList.add(Action.LEFT);
-            }
-            else if(path.get(i).getY() < path.get(i + 1).getY()) {
-                actionsList.add(Action.DOWN);
-            }
-            else if(path.get(i).getY() > path.get(i + 1).getY()) {
-                actionsList.add(Action.UP);
-            }
-        }
-        return actionsList;
     }
 }

@@ -51,10 +51,11 @@ public class MainWindowController implements Initializable {
                         for(Tile tile : path) {
                             System.out.println(tile.getX() + " " + tile.getY());
                         }
-                        List<Action> directionsList = aspiBot.getEffector().convertPathToActions(path);
+                        List<Action> directionsList = decision.convertPathToActions(path);
                         for(Action direction : directionsList) {
                             Thread.sleep(1000);
                             aspiBot.getEffector().move(aspiBot, direction);
+                            System.out.println(direction.toString());
                         }
 
 
@@ -83,7 +84,8 @@ public class MainWindowController implements Initializable {
                 }
             }
         }.start();
-      /*  new Thread() {
+
+       /*new Thread() {
             @Override
             public void run() {
                 super.run();
@@ -108,10 +110,7 @@ public class MainWindowController implements Initializable {
                     }
                 }
             }
-        }.start();
-
-
-       */
+        }.start();*/
     }
 
 

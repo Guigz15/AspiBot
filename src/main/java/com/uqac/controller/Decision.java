@@ -3,12 +3,8 @@ package com.uqac.controller;
 import com.uqac.model.*;
 import lombok.Getter;
 import lombok.Setter;
-
 import java.util.*;
 import java.util.stream.Collectors;
-
-import static java.lang.Thread.sleep;
-import java.util.*;
 
 public class Decision {
     @Getter @Setter
@@ -59,9 +55,9 @@ public class Decision {
                 alreadySeenGoal.add(leaf.getNode());
             }
             System.out.print("alreadySeenStart :");
-            alreadySeenStart.stream().forEach(tile->tile.display());
+            alreadySeenStart.forEach(Tile::display);
             System.out.print("alreadySeenGoal :");
-            alreadySeenGoal.stream().forEach(tile->tile.display());
+            alreadySeenGoal.forEach(Tile::display);
             communTile = wayStart.hasCommunNode(wayGoal);
             if (communTile != null)
             {
@@ -75,57 +71,45 @@ public class Decision {
         System.out.print("firstPart :");
         if (firstPart != null)
         {
-            firstPart.stream().forEach(tile-> tile.display());
+            firstPart.forEach(Tile::display);
             System.out.println();
         }
         List<Tile> secondPart = wayGoal.getWayTo(communTile);
         System.out.print("secondPart :");
         if (secondPart != null)
         {
-            secondPart.stream().forEach(tile-> tile.display());
+            secondPart.forEach(Tile::display);
             System.out.println();
         }
         Collections.reverse(secondPart);
         secondPart.remove(0);
         firstPart.addAll(secondPart);
         System.out.println("le chemin :");
-        firstPart.stream().forEach(tile->tile.display());
+        firstPart.forEach(Tile::display);
         List<Action> intentions = new ArrayList<>();
         intentions.addAll(getInstruction(firstPart));
-        intentions.stream().forEach(intention->System.out.println(intention.toString()));
+        intentions.forEach(intention->System.out.println(intention.toString()));
         return intentions;
     }
 
     public void propagate(SearchTree tree, LinkedHashSet<Tile> forbiddenTiles)
     {
         List<SearchTree> leafs = tree.getLeaf();
-        List<Tile> tileToPropagate = new ArrayList<>();
-        leafs.stream().forEach(leaf->
+        leafs.forEach(leaf->
         {
             List<Tile> neighbours = sensor.getBoard().getNeighbors(leaf.getNode()).stream()
                     .filter((neighbour -> !forbiddenTiles.contains(neighbour))).collect(Collectors.toList());
             leaf.addSons(neighbours);
         });
-        /*
-        LinkedHashSet<Tile> neighbours = sensor.getBoard().getNeighbors(tree.getLeaf());
-        List<Tile> tileToPropagate =
-                neighbours.stream()
-                .filter(neighbour -> !forbiddenTiles.contains(neighbour))
-                        .collect(Collectors.toList());
-        if(!tileToPropagate.isEmpty())
-        {
-            tree.addSons(tileToPropagate);
-        }
-
-        */
     }
+
     public List<Action> getInstruction(List<Tile> way)
     {
         List<Action> actions = new ArrayList<>();
-        Tile currentTile = null;
+        Tile currentTile;
         Tile nextTile = null;
-        int xMove = 0;
-        int yMove = 0;
+        int xMove;
+        int yMove;
         if(way.size() == 0)
         {
             return actions;
@@ -166,6 +150,7 @@ public class Decision {
                 actions.add(Action.UP);
             }
         }
+
         if (nextTile.isGem())
         {
             actions.add(Action.PICK_UP);
@@ -176,7 +161,30 @@ public class Decision {
         return actions;
     }
 
-
+    public List<Action> convertPathToActions(List<Tile> path) {
+        List<Action> actionsList = new ArrayList<>();
+        for(int i = 0; i < path.size() - 1; i++) {
+            if(path.get(i).isGem()) {
+                actionsList.add(Action.PICK_UP);
+            }
+            if(path.get(i).isDust()) {
+                actionsList.add(Action.VACUUMIZE);
+            }
+            if(path.get(i).getX() < path.get(i + 1).getX()) {
+                actionsList.add(Action.RIGHT);
+            }
+            else if(path.get(i).getX() > path.get(i + 1).getX()) {
+                actionsList.add(Action.LEFT);
+            }
+            else if(path.get(i).getY() < path.get(i + 1).getY()) {
+                actionsList.add(Action.DOWN);
+            }
+            else if(path.get(i).getY() > path.get(i + 1).getY()) {
+                actionsList.add(Action.UP);
+            }
+        }
+        return actionsList;
+    }
 
     public List<Tile> aStar(AspiBot aspiBot) {
         sensor = aspiBot.getSensor();
@@ -212,13 +220,14 @@ public class Decision {
                 if (!closedList.contains(neighbor)) {
                     int tempG = current.getG() + 1;
                     if (openList.contains(neighbor)) {
-                        if (tempG < neighbor.getG()) {
-                            neighbor.setG(tempG - 2);
-                        }
-                    } else {
-                        neighbor.setG(tempG);
+                        if (current.getTile().isGem())
+                            tempG -= 1;
+                        if (current.getTile().isDust())
+                            tempG -= 2;
+                    } else
                         openList.add(neighbor);
-                    }
+
+                    neighbor.setG(tempG);
                     neighbor.setH(Math.abs((int)neighbor.getTile().getX() - (int)goal.getX()) + Math.abs((int)neighbor.getTile().getY() - (int)goal.getY()));
                     neighbor.setF(neighbor.getG() + neighbor.getH());
                     neighbor.setNodeParent(current);
