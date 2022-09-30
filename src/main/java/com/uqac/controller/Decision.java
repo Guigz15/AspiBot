@@ -181,48 +181,72 @@ public class Decision {
     public List<Tile> aStar(AspiBot aspiBot) {
         sensor = aspiBot.getSensor();
         Tile goal = sensor.findFarestDust(aspiBot);
+        System.out.println("Start : " + sensor.getTile().getX() + " " + sensor.getTile().getY());
         System.out.println("Goal : " + goal.getX() + " " + goal.getY());
-        List<Tile> openList = new ArrayList<>();
-        List<Tile> closedList = new ArrayList<>();
+        List<Node> openList = new ArrayList<>();
+        List<Node> closedList = new ArrayList<>();
         List<Tile> path = new ArrayList<>();
-        openList.add(sensor.getTile());
+        openList.add(new Node(sensor.getTile()));
         while (!openList.isEmpty()) {
-            Tile current = openList.get(0);
-            for (Tile tile : openList) {
-                if (tile.getF() < current.getF()) {
-                    current = tile;
+            Node current = openList.get(0);
+            for (Node node : openList) {
+                if (node.getF() < current.getF()) {
+                    current = node;
                 }
             }
             openList.remove(current);
             closedList.add(current);
-            if (current.equals(goal)) {
-                Tile temp = current;
-                path.add(temp);
-                while (temp.getTileParent() != null) {
-                    path.add(temp.getTileParent());
-                    temp = temp.getTileParent();
+            if (current.getTile().equals(goal)) {
+                Node temp = current;
+                path.add(temp.getTile());
+                while (temp.getNodeParent() != null) {
+                    path.add(temp.getNodeParent().getTile());
+                    temp = temp.getNodeParent();
                 }
                 Collections.reverse(path);
                 return path;
             }
-            List<Tile> neighbors = sensor.getBoard().getNeighbors(current);
-            for (Tile neighbor : neighbors) {
+            List<Tile> neighbors = sensor.getBoard().getNeighbors(current.getTile());
+            for (Tile tile : neighbors) {
+                Node neighbor = new Node(tile);
                 if (!closedList.contains(neighbor)) {
                     int tempG = current.getG() + 1;
                     if (openList.contains(neighbor)) {
                         if (tempG < neighbor.getG()) {
-                            neighbor.setG(tempG);
+                            neighbor.setG(tempG - 2);
                         }
                     } else {
                         neighbor.setG(tempG);
                         openList.add(neighbor);
                     }
-                    neighbor.setH(Math.abs((int)neighbor.getX() - (int)goal.getX()) + Math.abs((int)neighbor.getY() - (int)goal.getY()));
+                    neighbor.setH(Math.abs((int)neighbor.getTile().getX() - (int)goal.getX()) + Math.abs((int)neighbor.getTile().getY() - (int)goal.getY()));
                     neighbor.setF(neighbor.getG() + neighbor.getH());
-                    neighbor.setTileParent(current);
+                    neighbor.setNodeParent(current);
                 }
             }
         }
         return null;
+    }
+
+    public class Node {
+
+        @Getter @Setter
+        private int f;
+        @Getter @Setter
+        private int g;
+        @Getter @Setter
+        private int h;
+        @Getter @Setter
+        private Node nodeParent;
+        @Getter @Setter
+        private Tile tile;
+
+        public Node(Tile tile) {
+            this.f = 0;
+            this.g = 0;
+            this.h = 0;
+            this.nodeParent = null;
+            this.tile = tile;
+        }
     }
 }

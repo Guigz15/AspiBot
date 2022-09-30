@@ -13,14 +13,6 @@ public class Tile extends Rectangle {
     private boolean dust;
     @Getter @Setter
     private boolean gem;
-    @Getter @Setter
-    private int f;
-    @Getter @Setter
-    private int g;
-    @Getter @Setter
-    private int h;
-    @Getter @Setter
-    private Tile tileParent;
 
     //Create an empty tile
     public Tile() {
@@ -28,10 +20,6 @@ public class Tile extends Rectangle {
         this.dust = false;
         this.gem = false;
         this.setFill(null);
-        this.f = 0;
-        this.g = 0;
-        this.h = 0;
-        this.tileParent = null;
     }
 
     @Override
@@ -54,10 +42,6 @@ public class Tile extends Rectangle {
         this.setFill(tile.getFill());
         this.setX(tile.getX());
         this.setY(tile.getY());
-        this.f = tile.getF();
-        this.g = tile.getG();
-        this.h = tile.getH();
-        this.tileParent = tile.getTileParent();
     }
     public int getXPosition()
     {

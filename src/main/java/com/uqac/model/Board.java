@@ -112,12 +112,4 @@ public class Board {
             }
         }
     }
-
-    public int distanceBetweenTiles(Tile tile1, Tile tile2) {
-        return (int)(Math.abs(tile1.getX() - tile2.getX()) + Math.abs(tile1.getY() - tile2.getY()));
-    }
-
-    public int calculatePath(List<Tile> tilePath) {
-        return 0;
-    }
 }

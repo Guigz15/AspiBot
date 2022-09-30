@@ -17,7 +17,7 @@ public class Effector {
         this.sensor = sensor;
         intentions = new ArrayList<>();
     }
-
+/*
     public void move(AspiBot aspiBot)
     {
         if (intentions.size()!=0)
@@ -25,7 +25,7 @@ public class Effector {
             move(aspiBot, intentions.get(0));
             intentions.remove(0);
         }
-    }
+    }*/
     public void move(AspiBot aspiBot, Action action) {
         this.sensor = aspiBot.getSensor();
         Tile oldTile = sensor.getTile();
@@ -64,7 +64,7 @@ public class Effector {
             oldTile.setDust(false);
             oldTile.setGem(false);
         }
-        sensor.getTile().display();
+        //sensor.getTile().display();
         sensor.getTile().draw();
     }
 
@@ -93,21 +93,27 @@ public class Effector {
     }
 
     public List<Action> convertPathToActions(List<Tile> path) {
-        List<Action> ActionsList = new ArrayList<>();
-        for(Tile tile : path) {
-            if(tile.getX() > sensor.getTile().getX()) {
-                ActionsList.add(Action.RIGHT);
+        List<Action> actionsList = new ArrayList<>();
+        for(int i = 0; i < path.size() - 1; i++) {
+            if(path.get(i).isDust()) {
+                actionsList.add(Action.VACUUMIZE);
             }
-            else if(tile.getX() < sensor.getTile().getX()) {
-                ActionsList.add(Action.LEFT);
+            if(path.get(i).isGem()) {
+                actionsList.add(Action.PICK_UP);
             }
-            else if(tile.getY() > sensor.getTile().getY()) {
-                ActionsList.add(Action.DOWN);
+            if(path.get(i).getX() < path.get(i + 1).getX()) {
+                actionsList.add(Action.RIGHT);
             }
-            else if(tile.getY() < sensor.getTile().getY()) {
-                ActionsList.add(Action.UP);
+            else if(path.get(i).getX() > path.get(i + 1).getX()) {
+                actionsList.add(Action.LEFT);
+            }
+            else if(path.get(i).getY() < path.get(i + 1).getY()) {
+                actionsList.add(Action.DOWN);
+            }
+            else if(path.get(i).getY() > path.get(i + 1).getY()) {
+                actionsList.add(Action.UP);
             }
         }
-        return ActionsList;
+        return actionsList;
     }
 }
