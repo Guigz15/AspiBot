@@ -48,13 +48,18 @@ public class MainWindowController implements Initializable {
                     {
                         if(aspiBot.getEffector().getIntentions().isEmpty())
                         {
-                            evaluation = aspiBot.getDecision().getEvaluation();
                             aspiBot.getEffector().setIntentions(aspiBot.getDecision().chooseAlgorithm(aspiBot));
                             //aspiBot.getEffector().getIntentions().forEach(action->System.out.print(action.toString()));
                         }
                         Thread.sleep(1000);
 
-                        aspiBot.getDecision().setEvaluation(evaluation + aspiBot.getEffector().move(aspiBot));
+                        aspiBot.getEffector().move(aspiBot);
+                        aspiBot.getSensor().updateState();
+                        System.out.println("Etat : "+aspiBot.getSensor().isClean());
+                        if(aspiBot.getSensor().isClean())
+                        {
+                            aspiBot.getDecision().updateEvaluation(5);
+                        }
                         System.out.println("Evaluation : " + aspiBot.getDecision().getEvaluation());
                     } catch (Exception e) {
                         throw new RuntimeException(e);
@@ -105,7 +110,7 @@ public class MainWindowController implements Initializable {
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }
-                    aspiBot.getDecision().setEvaluation(aspiBot.getDecision().getEvaluation()- board.generateItems());
+                    aspiBot.getDecision().updateEvaluation(board.generateItems());
                 }
             }
         }.start();

@@ -16,6 +16,17 @@ public class Sensor {
         this.tile = tile;
         this.clean = true;
     }
+    public void updateState()
+    {
+        if(board.getNbDust() == 0)
+        {
+            clean = true;
+        }
+        else
+        {
+            clean = false;
+        }
+    }
 
     public int getXPosition()
     {

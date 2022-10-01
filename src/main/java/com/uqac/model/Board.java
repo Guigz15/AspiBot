@@ -17,11 +17,13 @@ public class Board {
     private int height;
     @Getter @Setter
     private int width;
-
+    @Getter @Setter
+    private int nbDust;
     //Create an empty board
     public Board(int height, int width) {
         this.height = height;
         this.width = width;
+        nbDust = 0;
         this.tiles = new ArrayList<>();
         for (int i = 0; i < height; i++) {
             List<Tile> row = new ArrayList<>();
@@ -41,6 +43,7 @@ public class Board {
         this.height = board.getHeight();
         this.width = board.getWidth();
         this.tiles = new ArrayList<>();
+        this.nbDust = board.nbDust;
         for (int i = 0; i < height; i++) {
             List<Tile> row = new ArrayList<>();
             for (int j = 0; j < width; j++) {
@@ -52,7 +55,10 @@ public class Board {
             tiles.add(row);
         }
     }
-
+    public void updateNbDust(int amount)
+    {
+        nbDust += amount;
+    }
 
     public Tile getTile(int x, int y) {
         return tiles.get(x).get(y);
@@ -115,6 +121,7 @@ public class Board {
                         {
                             penalty += 4;
                             this.getTile(i, j).setDust(true);
+                            nbDust += 1;
                         }
                     }
                     if(new Random().nextDouble() < 0.05){
@@ -131,6 +138,6 @@ public class Board {
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
-        return penalty;
+        return -penalty;
     }
 }

@@ -16,6 +16,19 @@ public class Decision {
         this.evaluation=100;
     }
 
+    public void updateEvaluation(int amount)
+    {
+
+        evaluation =evaluation + amount;
+        if (evaluation > 100)
+        {
+            evaluation = 100;
+        }
+        if(evaluation < 0)
+        {
+            evaluation = 0;
+        }
+    }
     public List<Action> chooseAlgorithm (AspiBot aspiBot)
     {
         Tile goal = sensor.findFarestDust(aspiBot);
@@ -25,14 +38,17 @@ public class Decision {
             return new ArrayList<>();
         }
         HashMap<Integer,List<Action>> actions = new HashMap<>();
-        HashMap<Integer,List<Action>> temp = bidirectionnal_search(aspiBot, goal);
+        HashMap<Integer,List<Action>> temp = bidirectionnalSearch(aspiBot, goal);
+        System.out.println("bidirectional search : " + temp.toString());
         int bidirectionalKey = temp.keySet().iterator().next();
         actions.put(bidirectionalKey, temp.get(bidirectionalKey));
         System.out.println("1er algo : "+ bidirectionalKey +"  "+ temp.get(bidirectionalKey));
         temp = aStar(aspiBot,goal);
+        System.out.println("aStar : " + temp.toString());
+
         int aStarKey = temp.keySet().iterator().next();
         actions.put(aStarKey, temp.get(aStarKey));
-        System.out.println("2eme algo : "+ bidirectionalKey +"  "+ temp.get(bidirectionalKey));
+        System.out.println("2eme algo : "+ aStarKey +"  "+ temp.get(aStarKey));
 
         if(aStarKey >= bidirectionalKey)
         {
@@ -41,7 +57,7 @@ public class Decision {
         return actions.get(bidirectionalKey);
 
     }
-    public HashMap<Integer,List<Action>> bidirectionnal_search(AspiBot aspiBot, Tile goal)
+    public HashMap<Integer,List<Action>> bidirectionnalSearch(AspiBot aspiBot, Tile goal)
     {
 
         Tile communTile = null;
@@ -148,7 +164,11 @@ public class Decision {
             }
             bonus -= 1;
         }
-
+        if(path.get(path.size()-1).isGem())
+        {
+            actionsList.add(Action.PICK_UP);
+        }
+        actionsList.add(Action.VACUUMIZE);
         HashMap<Integer,List<Action>> mapAction = new HashMap<>();
         mapAction.put(bonus, actionsList);
         return mapAction;
