@@ -121,9 +121,6 @@ public class SearchTree
     }
 
     public List<Tile>getWayTo(Tile element)   {
-        System.out.print("element : ");
-        element.display();
-        System.out.println();
         List<Tile> way = new ArrayList<>();
         List<Boolean> wayIsFind = new ArrayList<>();
         wayIsFind.add(false);
@@ -133,36 +130,21 @@ public class SearchTree
     private List<Tile> getWayTo(Tile element, List<Tile> way, List<Boolean> wayIsFind)  {
         if(node.equals(element))
         {
-            System.out.print("ici");
-            node.display();
             way.add(node);
             wayIsFind.set(0, true);
             return way;
         }
         if (contains(element))
         {
-            System.out.print("là");
-            node.display();
-            for (SearchTree sonTree : sonTrees)
-            {
-                sonTree.node.display();
-            }
             way.add(node);
             for (SearchTree sonTree : sonTrees)
             {
                 if (!wayIsFind.get(0) && sonTree.contains(element))
                 {
-                    System.out.println(wayIsFind.get(0));
                     sonTree.getWayTo(element, way, wayIsFind);
                 }
             }
         }
         return way;
-    }
-
-    public void display() {
-        List<Tile>tiles = getAllNodes();
-        tiles.forEach(Tile::display);
-        System.out.println();
     }
 }

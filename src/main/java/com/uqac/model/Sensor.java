@@ -3,7 +3,7 @@ package com.uqac.model;
 import lombok.Getter;
 import lombok.Setter;
 
-public class Sensor {
+public class Sensor extends Tile {
     @Getter @Setter
     private Tile tile;
     @Getter @Setter
@@ -11,11 +11,20 @@ public class Sensor {
     @Getter @Setter
     private Board board;
 
+    /**
+     * Sensor constructor
+     * @param board board where the vacuum is evolving
+     * @param tile tile where the vacuum is
+     */
     public Sensor(Board board, Tile tile) {
         this.board = board;
         this.tile = tile;
         this.clean = true;
     }
+
+    /**
+     * Update state of the board (clean or not)
+     */
     public void updateState()
     {
         if(board.getNbDust() == 0)
@@ -28,16 +37,29 @@ public class Sensor {
         }
     }
 
+    /**
+     * Get x position of the tile
+     * @return tile x position
+     */
     public int getXPosition()
     {
         return tile.getXPosition();
     }
 
+    /**
+     * Get y position of the tile
+     * @return tile y position
+     */
     public int getYPosition()
     {
         return tile.getYPosition();
     }
 
+    /**
+     * Get the tile farest from the vacuum
+     * @param aspiBot vacuum
+     * @return tile
+     */
     public Tile findFarestDust(AspiBot aspiBot) {
         Sensor sensor = aspiBot.getSensor();
         int x = sensor.getTile().getXPosition();

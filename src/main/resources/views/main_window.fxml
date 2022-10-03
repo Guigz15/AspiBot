@@ -27,7 +27,7 @@
                 <Font size="30.0" />
             </font>
         </Text>
-        <Text fx:id="evaluation" strokeType="OUTSIDE" strokeWidth="0.0">
+        <Text fx:id="evaluationText" strokeType="OUTSIDE" strokeWidth="0.0">
             <font>
                 <Font name="System Bold" size="30.0" />
             </font>

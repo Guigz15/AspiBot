@@ -14,7 +14,9 @@ public class Tile extends Rectangle {
     @Getter @Setter
     private boolean gem;
 
-    //Create an empty tile
+    /**
+     * Tile constructor
+     */
     public Tile() {
         this.vacuum = false;
         this.dust = false;
@@ -34,7 +36,10 @@ public class Tile extends Rectangle {
     }
 
 
-    //Create a new tile from a given tile
+    /**
+     * Tile constructor with another tile
+     * @param tile tile to copy
+     */
     public Tile(Tile tile) {
         this.vacuum = tile.isVacuum();
         this.dust = tile.isDust();
@@ -43,17 +48,28 @@ public class Tile extends Rectangle {
         this.setX(tile.getX());
         this.setY(tile.getY());
     }
+
+    /**
+     * Get x position of the tile
+     * @return x position
+     */
     public int getXPosition()
     {
         return (int)getX();
     }
 
+    /**
+     * Get y position of the tile
+     * @return y position
+     */
     public int getYPosition()
     {
         return (int)getY();
     }
 
-
+    /**
+     * Draw objects in tile if an object is present
+     */
     public void draw() {
         if (isDust() && isGem() && isVacuum()) {
             setFill(new ImagePattern(new Image("images/vacuum_dust_gem.png")));
@@ -72,9 +88,5 @@ public class Tile extends Rectangle {
         } else if (!isVacuum() && !isGem() && !isDust()) {
             setFill(null);
         }
-    }
-    public void display()
-    {
-        System.out.print("(" +getXPosition() + ";"+getYPosition()+"); ");
     }
 }

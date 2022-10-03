@@ -6,6 +6,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import lombok.Getter;
 
@@ -17,10 +18,15 @@ public class AspiBotApplication extends Application {
     @Getter
     private MainWindowController mainWindowController;
 
+
     public static void main(String[] args) {
         launch();
     }
 
+    /**
+     * Start the application
+     * @param stage the stage to display the application
+     */
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Objects.requireNonNull(getClass().getClassLoader().getResource("views/main_window.fxml")));
@@ -29,6 +35,7 @@ public class AspiBotApplication extends Application {
         mainWindowController = fxmlLoader.getController();
         stage.setTitle("AspiBot");
         stage.setScene(scene);
+        stage.getIcons().add(new Image("images/vacuum.png"));
         stage.show();
 
         stage.setOnCloseRequest(windowEvent -> {

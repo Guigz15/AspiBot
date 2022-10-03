@@ -16,7 +16,7 @@ public class MainWindowController implements Initializable {
     @FXML @Getter
     private GridPane gridPane;
     @FXML
-    private Text evaluation;
+    private Text evaluationText;
     @Getter @Setter
     private Board board;
     private AspiBot aspiBot;
@@ -49,54 +49,22 @@ public class MainWindowController implements Initializable {
                         if(aspiBot.getEffector().getIntentions().isEmpty())
                         {
                             aspiBot.getEffector().setIntentions(aspiBot.getDecision().chooseAlgorithm(aspiBot));
-                            //aspiBot.getEffector().getIntentions().forEach(action->System.out.print(action.toString()));
                         }
-                        Thread.sleep(1000);
+                        Thread.sleep(800);
 
                         aspiBot.getEffector().move(aspiBot);
                         aspiBot.getSensor().updateState();
-                        System.out.println("Etat : "+aspiBot.getSensor().isClean());
                         if(aspiBot.getSensor().isClean())
                         {
                             aspiBot.getDecision().updateEvaluation(5);
                         }
-                        evaluation.setText(String.valueOf(aspiBot.getDecision().getEvaluation()));
-                        //System.out.println("Evaluation : " + aspiBot.getDecision().getEvaluation());
+                        evaluationText.setText(String.valueOf(aspiBot.getDecision().getEvaluation()));
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
                 }
             }
         }.start();
-        /*new Thread() {
-            @Override
-            public void run() {
-                super.run();
-                while(!exit) {
-                    try {
-                        Decision decision = new Decision(aspiBot.getSensor());
-                        List<Tile> path = new ArrayList<>();
-                        if(aspiBot.getSensor().findFarestDust(aspiBot) != aspiBot.getSensor().getTile()) {
-                            path = decision.aStar(aspiBot);
-                        }
-
-                        List<Action> directionsList = decision.convertPathToActions(path);
-                        for(Action direction : directionsList) {
-                            Thread.sleep(500);
-                            aspiBot.getEffector().move(aspiBot, direction);
-                            //System.out.println(direction.toString());
-                        }
-
-
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }.start();
-
-
-         */
         //Create a new thread to generate dust and gems on the board
         new Thread() {
             @Override
@@ -128,8 +96,6 @@ public class MainWindowController implements Initializable {
                             aspiBot.getEffector().setIntentions(aspiBot.getDecision().bidirectionnal_search(aspiBot));
                         }
 
-
-                        System.out.println("position :");
                         aspiBot.getSensor().getTile().display();
                     } catch (InterruptedException e) {
                         e.printStackTrace();

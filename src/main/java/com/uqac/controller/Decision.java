@@ -39,16 +39,12 @@ public class Decision {
         }
         HashMap<Integer,List<Action>> actions = new HashMap<>();
         HashMap<Integer,List<Action>> temp = bidirectionnalSearch(aspiBot, goal);
-        System.out.println("bidirectional search : " + temp.toString());
         int bidirectionalKey = temp.keySet().iterator().next();
         actions.put(bidirectionalKey, temp.get(bidirectionalKey));
-        System.out.println("1er algo : "+ bidirectionalKey +"  "+ temp.get(bidirectionalKey));
         temp = aStar(aspiBot,goal);
-        System.out.println("aStar : " + temp.toString());
 
         int aStarKey = temp.keySet().iterator().next();
         actions.put(aStarKey, temp.get(aStarKey));
-        System.out.println("2eme algo : "+ aStarKey +"  "+ temp.get(aStarKey));
 
         if(aStarKey >= bidirectionalKey)
         {
@@ -66,11 +62,7 @@ public class Decision {
         LinkedHashSet<SearchTree> leafStart = new LinkedHashSet<>();
         LinkedHashSet<SearchTree> leafGoal = new LinkedHashSet<>();
         SearchTree wayStart = new SearchTree(sensor.getTile());
-        //System.out.println("Tile depart :");
-        sensor.getTile().display();
         SearchTree wayGoal = new SearchTree(goal);
-        //System.out.println("Tile arrivée :");
-        goal.display();
         alreadySeenStart.add(sensor.getTile());
         alreadySeenGoal.add(goal);
         boolean wayFinded = false;
@@ -93,37 +85,18 @@ public class Decision {
             {
                 alreadySeenGoal.add(leaf.getNode());
             }
-            //System.out.print("alreadySeenStart :");
-            alreadySeenStart.forEach(Tile::display);
-            //System.out.print("alreadySeenGoal :");
-            alreadySeenGoal.forEach(Tile::display);
             communTile = wayStart.hasCommunNode(wayGoal);
             if (communTile != null)
             {
                 wayFinded = true;
             }
         }
-        //System.out.print("communTile :");
-        communTile.display();
         //trouver le noeud commun aux arbre et relier les chemins
         List<Tile> firstPart = wayStart.getWayTo(communTile);
-        //System.out.print("firstPart :");
-        if (firstPart != null)
-        {
-            firstPart.forEach(Tile::display);
-        }
         List<Tile> secondPart = wayGoal.getWayTo(communTile);
-        //System.out.print("secondPart :");
-        if (secondPart != null)
-        {
-            secondPart.forEach(Tile::display);
-        }
         Collections.reverse(secondPart);
         secondPart.remove(0);
         firstPart.addAll(secondPart);
-        //System.out.println("le chemin :");
-        firstPart.forEach(Tile::display);
-        //intentions.forEach(intention->System.out.println(intention.toString()));
         return convertPathToActions(firstPart);
     }
 

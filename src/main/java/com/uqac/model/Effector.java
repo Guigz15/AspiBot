@@ -13,11 +13,19 @@ public class Effector {
     @Setter
     private List<Action> intentions;
 
+    /**
+     * Effector constructor
+     * @param sensor sensor of the vacuum
+     */
     public Effector(Sensor sensor) {
         this.sensor = sensor;
         intentions = new ArrayList<>();
     }
 
+    /**
+     * Made the vacuum move
+     * @param aspiBot aspiBot to move
+     */
     public void move(AspiBot aspiBot)
     {
         if (intentions.size()!=0)
@@ -27,6 +35,11 @@ public class Effector {
         }
     }
 
+    /**
+     * Made the vacuum move
+     * @param aspiBot aspiBot to move
+     * @param action action to do
+     */
     private void move(AspiBot aspiBot, Action action) {
         this.sensor = aspiBot.getSensor();
         Tile oldTile = sensor.getTile();
