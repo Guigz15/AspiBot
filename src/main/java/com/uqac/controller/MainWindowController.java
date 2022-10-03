@@ -4,18 +4,19 @@ import com.uqac.model.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Text;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 import java.util.ResourceBundle;
 
 public class MainWindowController implements Initializable {
     @FXML @Getter
     private GridPane gridPane;
+    @FXML
+    private Text evaluation;
     @Getter @Setter
     private Board board;
     private AspiBot aspiBot;
@@ -40,7 +41,6 @@ public class MainWindowController implements Initializable {
         {
             public void run()
             {
-                int evaluation =0;
                 super.run();
                 while (!exit)
                 {
@@ -60,7 +60,8 @@ public class MainWindowController implements Initializable {
                         {
                             aspiBot.getDecision().updateEvaluation(5);
                         }
-                        System.out.println("Evaluation : " + aspiBot.getDecision().getEvaluation());
+                        evaluation.setText(String.valueOf(aspiBot.getDecision().getEvaluation()));
+                        //System.out.println("Evaluation : " + aspiBot.getDecision().getEvaluation());
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
