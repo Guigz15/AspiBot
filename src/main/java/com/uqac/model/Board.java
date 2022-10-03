@@ -1,15 +1,14 @@
 package com.uqac.model;
 
-import javafx.scene.image.Image;
-import javafx.scene.paint.ImagePattern;
 import lombok.Getter;
 import lombok.Setter;
-
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * This class represents the board where the vacuum is evolving
+ */
 public class Board {
     @Getter @Setter
     private List<List<Tile>> tiles;
@@ -19,7 +18,12 @@ public class Board {
     private int width;
     @Getter @Setter
     private int nbDust;
-    //Create an empty board
+
+    /**
+     * Board constructor
+     * @param height of the board
+     * @param width of the board
+     */
     public Board(int height, int width) {
         this.height = height;
         this.width = width;
@@ -38,74 +42,46 @@ public class Board {
         }
     }
 
-    //Create a new board from a given board
-    public Board(Board board) {
-        this.height = board.getHeight();
-        this.width = board.getWidth();
-        this.tiles = new ArrayList<>();
-        this.nbDust = board.nbDust;
-        for (int i = 0; i < height; i++) {
-            List<Tile> row = new ArrayList<>();
-            for (int j = 0; j < width; j++) {
-                Tile tile = new Tile(board.getTile(i, j));
-                tile.setX(i);
-                tile.setY(j);
-                row.add(tile);
-            }
-            tiles.add(row);
-        }
-    }
-    public void updateNbDust(int amount)
-    {
+    /**
+     * Update the number of dust on the board
+     * @param amount of dust to add
+     */
+    public void updateNbDust(int amount) {
         nbDust += amount;
     }
 
+    /**
+     * Get a tile from the board
+     * @param x of the tile
+     * @param y of the tile
+     * @return tile at position x, y
+     */
     public Tile getTile(int x, int y) {
         return tiles.get(x).get(y);
     }
-    public LinkedHashSet<Tile> getNeighbors(List<Tile> tiles)
-    {
-        LinkedHashSet<Tile> neighbors = new LinkedHashSet<>();
-        if (tiles != null)
-        {
-            tiles.stream().forEach(tile ->
-            {
-                neighbors.addAll(getNeighbors(tile));
-            });
-        }
-        return neighbors;
-    }
 
+    /**
+     * Get all neighbors of a tile
+     * @param tile to get neighbors
+     * @return list of neighbors of the tile
+     */
     public List<Tile> getNeighbors(Tile tile) {
         int x = (int) tile.getX();
         int y = (int) tile.getY();
         List<Tile> neighbors = new ArrayList<>();
-        if (x > 0) {
+        if (x > 0)
             neighbors.add(getTile(x - 1, y));
-        }
-        if (x < width - 1) {
+        if (x < width - 1)
             neighbors.add(getTile(x + 1, y));
-        }
-        if (y > 0) {
+        if (y > 0)
             neighbors.add(getTile(x, y - 1));
-        }
-        if (y < height - 1) {
+        if (y < height - 1)
             neighbors.add(getTile(x, y + 1));
-        }
         return neighbors;
     }
 
-    public List<Tile> getAllTiles() {
-        List<Tile> allTiles = new ArrayList<>();
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                allTiles.add(getTile(i, j));
-            }
-        }
-        return allTiles;
-    }
     /**
-     * This function is used to generate new items (dust and gem) on the board
+     * This method is used to generate new items (dust and gem) on the board
      */
     public int generateItems() {
         int penalty = 0;
@@ -117,18 +93,15 @@ public class Board {
             for(int i = 0; i < 5; i++) {
                 for(int j = 0; j < 5; j++) {
                     if(new Random().nextDouble() < 0.1) {
-                        if(!this.getTile(i, j).isDust())
-                        {
+                        if(!this.getTile(i, j).isDust()) {
                             penalty += 4;
                             this.getTile(i, j).setDust(true);
                             nbDust += 1;
                         }
                     }
-                    if(new Random().nextDouble() < 0.05){
+                    if(new Random().nextDouble() < 0.05) {
                         if(!this.getTile(i,j).isGem())
-                        {
                             this.getTile(i, j).setGem(true);
-                        }
                     }
                     this.getTile(i, j).draw();
                 }

@@ -9,22 +9,23 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import lombok.Getter;
-
 import java.io.IOException;
 import java.util.Objects;
 
-
+/**
+ * This class is the main class of the application
+ */
 public class AspiBotApplication extends Application {
+
     @Getter
     private MainWindowController mainWindowController;
-
 
     public static void main(String[] args) {
         launch();
     }
 
     /**
-     * Start the application
+     * This method is called by default when the application is launched
      * @param stage the stage to display the application
      */
     @Override

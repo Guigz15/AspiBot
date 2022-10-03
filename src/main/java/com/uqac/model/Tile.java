@@ -6,6 +6,9 @@ import javafx.scene.shape.Rectangle;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * This class represents a tile of the board
+ */
 public class Tile extends Rectangle {
     @Getter @Setter
     private boolean vacuum;
@@ -24,6 +27,9 @@ public class Tile extends Rectangle {
         this.setFill(null);
     }
 
+    /**
+     * This method is used to compare two tiles
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -33,20 +39,6 @@ public class Tile extends Rectangle {
 
         if (getX() != tile.getX()) return false;
         return getY() == tile.getY();
-    }
-
-
-    /**
-     * Tile constructor with another tile
-     * @param tile tile to copy
-     */
-    public Tile(Tile tile) {
-        this.vacuum = tile.isVacuum();
-        this.dust = tile.isDust();
-        this.gem = tile.isGem();
-        this.setFill(tile.getFill());
-        this.setX(tile.getX());
-        this.setY(tile.getY());
     }
 
     /**

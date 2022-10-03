@@ -1,11 +1,14 @@
 package com.uqac.model;
 
 import com.uqac.controller.Decision;
+import com.uqac.controller.Sensor;
 import lombok.Getter;
 import lombok.Setter;
-
 import java.util.Random;
 
+/**
+ * This class represents the vacuum cleaner
+ */
 public class AspiBot {
     @Getter @Setter
     private Sensor sensor;
@@ -16,7 +19,7 @@ public class AspiBot {
 
     /**
      * AspiBot constructor
-     * @param board board where the vacuum is evolving
+     * @param board where the vacuum is evolving
      */
     public AspiBot(Board board) {
         Random r = new Random();

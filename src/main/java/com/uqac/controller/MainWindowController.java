@@ -7,11 +7,13 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import lombok.Getter;
 import lombok.Setter;
-
 import java.net.URL;
 import java.util.Random;
 import java.util.ResourceBundle;
 
+/**
+ * This controller is used to manage the main view and all threads
+ */
 public class MainWindowController implements Initializable {
     @FXML @Getter
     private GridPane gridPane;
@@ -22,6 +24,11 @@ public class MainWindowController implements Initializable {
     private AspiBot aspiBot;
     static volatile boolean exit = false;
 
+    /**
+     * This method is called by default when the view is loaded
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.board = new Board(5, 5);

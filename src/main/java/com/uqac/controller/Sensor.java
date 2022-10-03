@@ -1,9 +1,15 @@
-package com.uqac.model;
+package com.uqac.controller;
 
+import com.uqac.model.AspiBot;
+import com.uqac.model.Board;
+import com.uqac.model.Tile;
 import lombok.Getter;
 import lombok.Setter;
 
-public class Sensor extends Tile {
+/**
+ * This class represents the sensor of the vacuum
+ */
+public class Sensor {
     @Getter @Setter
     private Tile tile;
     @Getter @Setter
@@ -13,8 +19,8 @@ public class Sensor extends Tile {
 
     /**
      * Sensor constructor
-     * @param board board where the vacuum is evolving
-     * @param tile tile where the vacuum is
+     * @param board where the vacuum is evolving
+     * @param tile where the vacuum is
      */
     public Sensor(Board board, Tile tile) {
         this.board = board;
@@ -23,26 +29,10 @@ public class Sensor extends Tile {
     }
 
     /**
-     * Update state of the board (clean or not)
-     */
-    public void updateState()
-    {
-        if(board.getNbDust() == 0)
-        {
-            clean = true;
-        }
-        else
-        {
-            clean = false;
-        }
-    }
-
-    /**
      * Get x position of the tile
      * @return tile x position
      */
-    public int getXPosition()
-    {
+    public int getXPosition() {
         return tile.getXPosition();
     }
 
@@ -50,17 +40,23 @@ public class Sensor extends Tile {
      * Get y position of the tile
      * @return tile y position
      */
-    public int getYPosition()
-    {
+    public int getYPosition() {
         return tile.getYPosition();
     }
 
     /**
-     * Get the tile farest from the vacuum
-     * @param aspiBot vacuum
-     * @return tile
+     * Update state of the board (clean or not)
      */
-    public Tile findFarestDust(AspiBot aspiBot) {
+    public void updateState() {
+        clean = board.getNbDust() == 0;
+    }
+
+    /**
+     * Get the furthest tile with dust from the vacuum
+     * @param aspiBot vacuum
+     * @return furthest tile with dust
+     */
+    public Tile findFurthestDust(AspiBot aspiBot) {
         Sensor sensor = aspiBot.getSensor();
         int x = sensor.getTile().getXPosition();
         int y = sensor.getTile().getYPosition();
