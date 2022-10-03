@@ -1,6 +1,9 @@
-package com.uqac.model;
+package com.uqac.controller;
 
 import com.uqac.controller.Sensor;
+import com.uqac.model.Action;
+import com.uqac.model.AspiBot;
+import com.uqac.model.Tile;
 import lombok.Getter;
 import lombok.Setter;
 import java.util.ArrayList;

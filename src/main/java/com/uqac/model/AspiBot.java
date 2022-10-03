@@ -1,6 +1,7 @@
 package com.uqac.model;
 
 import com.uqac.controller.Decision;
+import com.uqac.controller.Effector;
 import com.uqac.controller.Sensor;
 import lombok.Getter;
 import lombok.Setter;

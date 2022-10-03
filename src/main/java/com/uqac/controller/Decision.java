@@ -90,8 +90,6 @@ public class Decision {
             leafGoal.addAll(wayGoal.getLeaf());
             for (SearchTree leaf : leafStart)
                 alreadySeenStart.add(leaf.getNode());
-
-            // Update of the forbiddenGoal list and wayGoal tree
             for (SearchTree leaf : leafGoal) {
                 alreadySeenGoal.add(leaf.getNode());
             }
